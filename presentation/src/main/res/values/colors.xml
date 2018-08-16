@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#6738d2</color>
+    <color name="colorAccent">#b8c9d9</color>
+
+    <!--Navigation-->
+    <color name="actv_icon_nav">#FFDB6E</color>
+    <color name="icon_nav">#A8BBCA</color>
+    <color name="bg_main_layout">#232234</color>
+    <color name="ic_color_greey">#b8c9d9</color>
+
+    <!--StartViewActivity-->
+    <color name="bg_above_navig">#343547</color>
+    <color name="bg_main_item">#2d2e40</color>
+    <color name="pieColorOrange">#f6931c</color>
+    <color name="pieColorBlue">#637deb</color>
+    <color name="pieColorGreen">#01cb99</color>
+    <color name="pieColorGreey">#cecac7</color>
+    <color name="h1Color">#ffffff</color>
+    <color name="wallet">#6f7889</color>
+
+</resources>

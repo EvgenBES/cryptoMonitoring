@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.test.presentation.screeens.main.StartViewModel" />
+    </data>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_main_layout"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="226dp">
+
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/progressBar2"-->
+            <!--style="?android:attr/progressBarStyle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:translationZ="99dp"-->
+            <!--app:visibility="@{viewModel.startProgress}"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/header_gradient"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Ballance"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="@{viewModel.ballanceMoney}"
+                    tools:text="$ 15,953.45"
+                    android:textColor="@color/h1Color"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+17.39%"
+                        android:textColor="@color/h1Color"
+                        android:textSize="@dimen/symbol" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="3dp"
+                        android:src="@drawable/ic_sort_up" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_radius_7dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="100">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.test.presentation.utils.PieView
+                        android:id="@+id/pieView"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:orientation="vertical"
+                    android:paddingLeft="25dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_circle_green"
+                        android:text="@{viewModel.elemFirs}"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="@dimen/symbol"
+                        android:textStyle="bold"
+                        tools:text=" ETH" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_circle_orange"
+                        android:text="@{viewModel.elemSecond}"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="@dimen/symbol"
+                        android:textStyle="bold"
+                        tools:text=" BTC" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_circle_blue"
+                        android:text="@{viewModel.elemThird}"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="@dimen/symbol"
+                        android:textStyle="bold"
+                        tools:text=" XRP" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_circle_greey"
+                        android:text=" All"
+                        android:textSize="@dimen/symbol"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@{viewModel.percentFirst}"
+                        android:textSize="@dimen/symbol"
+                        tools:text="27%" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@{viewModel.percentSecond}"
+                        android:textSize="@dimen/symbol"
+                        tools:text="23%" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@{viewModel.percentThird}"
+                        android:textSize="@dimen/symbol"
+                        tools:text="12%" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.percentFourth}"
+                        android:textSize="@dimen/symbol"
+                        tools:text="38%" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="66dp"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fadeScrollbars="false">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/startRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </ScrollView>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_above="@+id/navigation"
+            android:background="@color/bg_above_navig"></LinearLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:itemBackground="@color/bg_main_layout"
+            app:itemIconTint="@drawable/item_bg"
+            app:itemTextColor="@drawable/item_bg"
+            app:menu="@menu/navigation" />
+
+
+    </RelativeLayout>
+
+</layout>

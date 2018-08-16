@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.test.presentation.screeens.notification.NotifViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_main_layout">
+
+        <LinearLayout
+            android:id="@+id/topLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:onClick="@{(v)->viewModel.onClickBack()}"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/ic_chevron_left_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Notification"
+                    android:textSize="22sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/topLayout"
+            android:background="@color/bg_above_navig">
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topLayout"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:textSize="20sp"
+            android:text="Empty" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topLayout"
+            android:layout_marginTop="12dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="66dp"
+                android:fadeScrollbars="false">
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerNotif"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </ScrollView>
+
+
+        </RelativeLayout>
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_above="@+id/navigation"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
+            app:backgroundTint="@color/bg_above_navig"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_plus_23dp"
+            android:onClick="@{(v)->viewModel.onClickAddNotif()}"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_above="@+id/navigation"
+            android:background="@color/bg_above_navig">
+
+        </LinearLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:itemBackground="@color/bg_main_layout"
+            app:itemIconTint="@drawable/item_bg"
+            app:itemTextColor="@drawable/item_bg"
+            app:menu="@menu/navigation" />
+
+    </RelativeLayout>
+
+</layout>

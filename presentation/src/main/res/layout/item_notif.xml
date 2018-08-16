@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.test.presentation.screeens.notification.NotifItemViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_radius_7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            style="@style/IconItem"
+            app:imageUrl="@{viewModel.imageUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:text="@string/priceText"
+            tools:text="Price"
+            android:textColor="@color/h1Color"
+            android:textSize="@dimen/itemH2Size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@{viewModel.name}"
+            tools:text="Bitcoin"
+            android:textColor="@color/h1Color"
+            android:textSize="@dimen/itemH2Size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/whent_coin"
+            tools:text="Whent coin"
+            android:textColor="@color/wallet"
+            android:textSize="@dimen/symbol"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginEnd="5dp"
+            android:src="@{viewModel.motionPrice ? @drawable/ic_caret_up_20dp : @drawable/ic_caret_down_20dp}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="2dp"
+            android:gravity="right"
+            android:text="@{viewModel.pricePosition}"
+            tools:text="$ 300.51"
+            android:textColor="@color/wallet"
+            android:textSize="@dimen/symbol"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> viewModel.onMyButtonOneClicked()}"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp"
+            android:src="@drawable/ic_feather_alt_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/editText"
+            android:onClick="@{(v) -> viewModel.onMyButtonOneClicked()}"
+            tools:text="edit"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/bg_main_layout"
+            tools:ignore="MissingConstraints">
+
+        </LinearLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

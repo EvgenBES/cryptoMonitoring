@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_main_layout"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/bg_main_item"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_bell_24dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:gravity="center"
+            android:maxWidth="250dp"
+            android:text="  Add notification"
+            android:textColor="@color/h1Color"
+            android:textSize="@dimen/itemH1Size" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/searchCoin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:hint="@string/search_coin"
+        android:inputType="text"
+        android:textColor="@color/ic_color_greey"
+        android:textSize="@dimen/itemH1Size" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:text="Coin: Bitcoin"
+        android:textColor="@color/ic_color_greey"
+        android:textSize="@dimen/itemH1Size"
+        android:textStyle="bold"
+        tools:text="BTC" />
+
+    <EditText
+        android:id="@+id/notifPrice2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:hint="@string/priceNotif"
+        android:inputType="date"
+        android:textColor="@color/ic_color_greey"
+        android:textSize="@dimen/itemH1Size" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:checked="false"
+            android:text="@string/below"
+            android:textColor="#f04d50"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:checked="true"
+            android:text="@string/higher"
+            android:textColor="#05be92"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </RadioGroup>
+
+</LinearLayout>

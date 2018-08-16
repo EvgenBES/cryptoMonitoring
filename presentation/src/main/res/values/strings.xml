@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Crypto Portfolio</string>
+
+    <string name="error_internet_not_available">Интернет не доступен</string>
+    <string name="error_server_not_available">Сервер не доступен</string>
+    <string name="error_server">Серверная ошибка</string>
+    <string name="error">Непредвиденная ошибка</string>
+    <string name="cancel">Cancel</string>
+
+
+    <!--FragmentDialog-->
+    <string name="addQuantity">ADD</string>
+    <string name="back">BACK</string>
+    <string name="how_many_coins">  How many coins?</string>
+    <string name="quantity">Quantity...</string>
+    <string name="addNewNotif">  Add notification</string>
+    <string name="priceNotif">Price...</string>
+    <string name="below">Below</string>
+    <string name="higher">Higher</string>
+    <string name="search_coin">search Coin...</string>
+    <string name="priceText">Price:</string>
+    <string name="whent_coin">Whent coin:</string>
+    <string name="editText">edit</string>
+    <string name="editNotif">EDIT</string>
+    <string name="deletNotif">DELETE</string>
+
+    <!--Custom Toast-->
+    <string name="del_notif">You deleted notification!</string>
+    <string name="add_notif">You added notification!</string>
+    <string name="ad_coin">You added a coin to the list!</string>
+    <string name="edit_quantity">You added quantity a coin!</string>
+
+
+</resources>

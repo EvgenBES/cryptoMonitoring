@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="itemH1Size">18sp</dimen>
+    <dimen name="itemH2Size">17sp</dimen>
+    <dimen name="symbol">15sp</dimen>
+</resources>
