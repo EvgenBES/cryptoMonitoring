@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,6 +49,9 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
     public ObservableField<String> percentThird = new ObservableField<>("0%");
     public ObservableField<String> percentFourth = new ObservableField<>("0%");
 
+    public ObservableField<Boolean> viewStib = new ObservableField<>(true);
+
+
 
     private Coin addQuentityCoin;
 
@@ -82,11 +86,12 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
                     public void accept(List<Coin> coins) throws Exception {
                         adapter.setItems(coins);
 
-                        myTestVersion(coins);
+                        loadTopElement(coins);
                     }
 
                 })
                 .isDisposed();
+
 
 
         //Edit Quantity coin
@@ -185,7 +190,7 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
     }
 
 
-    private void myTestVersion(List<Coin> Coin) {
+    private void loadTopElement(List<Coin> Coin) {
 
         //Creates new list item where have symbol coin and sumPrice (price * quantity)
         List<ItemTopStart> listItem = new ArrayList<>();
@@ -286,4 +291,6 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
         float[] piePosition = {piePositionFirst, piePositionSecond, piePositionThird, piePositionAll};
         PieView.setPercent(piePosition);
     }
+
+
 }
