@@ -12,7 +12,9 @@ import android.test.com.testproject.R;
 import android.test.com.testproject.databinding.ActivityNotifViewBinding;
 import android.view.MenuItem;
 
+import com.test.domain.entity.Coin;
 import com.test.presentation.base.BaseMvvmActivity;
+import com.test.presentation.screeens.main.QuantityDialog;
 
 public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, ActivityNotifViewBinding, NotifRouter>{
 
@@ -55,8 +57,6 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Animation
-        overridePendingTransition(R.anim.right_down_to_left_top, R.anim.lost_activity_out);
 
         binding.recyclerNotif.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerNotif.setHasFixedSize(true);
@@ -82,4 +82,17 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
         router.getActivity().finish();
     }
 
+    public void addNotifDialog() {
+        AddNotificationDialog dialog = new AddNotificationDialog();
+        dialog.show(getSupportFragmentManager(), "AddNotificationDialog");
+    }
+
+    public void editNotifDialog() {
+        EditNotificationDialog dialog = new EditNotificationDialog();
+        dialog.show(getSupportFragmentManager(), "EditNotificationDialog");
+    }
+
+    public void addNotificationBd(Coin coin) {
+        router.addNotif(coin);
+    }
 }

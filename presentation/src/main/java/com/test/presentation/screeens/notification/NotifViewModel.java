@@ -80,8 +80,7 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
                     @Override
                     public void onNext(ClickedItemModel clickedItemModel) {
-                        onClickEditNotif(clickedItemModel.getPosition());
-                        Log.e("AAQQ", "onNext: CLICK EDIT");
+                      router.editDialog();
                     }
 
                     @Override
@@ -144,31 +143,7 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
 
     public void onClickAddNotif() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(router.getActivity(), AlertDialog.THEME_HOLO_DARK);
-        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-        builder
-                .setView(inflater.inflate(R.layout.item_notif_dialog, null))
-                // Add action buttons
-                .setPositiveButton(R.string.addQuantity, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-//                        Coin(long id, String name, String symbol, String image, int motion, double position)
-
-                        addNotifUseCase.addNotif(new Coin(
-                                1 + random.nextInt(999),
-                                "Magarita",
-                                "MGT",
-                                String.format("https://s2.coinmarketcap.com/static/img/coins/64x64/%d.png", 1 + random.nextInt(98)),
-                                random.nextInt(9999),
-                                random.nextBoolean()));
-
-                        showAddNotifToast();
-
-                    }
-                })
-                .setNegativeButton(R.string.back, null)
-                .show();
+       router.addDialog();
     }
 
 
@@ -197,5 +172,9 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
         toast.setView(toastLayout);
         toast.show();
+    }
+
+    public void addNotifBd(Coin coin) {
+        addNotifUseCase.addNotif(coin);
     }
 }

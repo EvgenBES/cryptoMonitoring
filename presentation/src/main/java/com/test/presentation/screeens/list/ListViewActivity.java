@@ -52,12 +52,9 @@ public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityLi
     };
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Animation
-        overridePendingTransition(R.anim.down_to_top, R.anim.lost_activity_out);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);

@@ -28,7 +28,7 @@
     <string name="del_notif">You deleted notification!</string>
     <string name="add_notif">You added notification!</string>
     <string name="ad_coin">You added a coin to the list!</string>
-    <string name="edit_quantity">You added quantity a coin!</string>
+    <string name="edit_quantity">You edited quantity a coin!</string>
 
 
 </resources>

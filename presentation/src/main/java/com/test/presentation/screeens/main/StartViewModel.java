@@ -1,16 +1,11 @@
 package com.test.presentation.screeens.main;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.databinding.ObservableField;
 import android.test.com.testproject.R;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.test.app.App;
@@ -23,11 +18,8 @@ import com.test.presentation.base.recycler.ClickedItemModel;
 import com.test.presentation.base.recycler.StartItemAdapter;
 import com.test.presentation.utils.PieView;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,10 +43,6 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
 
     public ObservableField<Boolean> viewStib = new ObservableField<>(true);
 
-
-
-    private Coin addQuentityCoin;
-
     @Inject
     public GetBDCoinUseCase getBDCoinUseCase;
 
@@ -74,7 +62,6 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
 
     @Override
     public void setItem(Coin coin) {
-
     }
 
     public StartViewModel() {
@@ -93,7 +80,6 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
                 .isDisposed();
 
 
-
         //Edit Quantity coin
         adapter
                 .observeItemClick()
@@ -105,8 +91,7 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
 
                     @Override
                     public void onNext(ClickedItemModel<Coin> coinClickedItemModel) {
-                        addQuentityCoin = coinClickedItemModel.getEntity();
-                        onClickAddQuantityCoin();
+                        router.goDialog(coinClickedItemModel.getEntity());
                     }
 
                     @Override
@@ -143,34 +128,12 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
 
                     }
                 });
-
     }
 
-
-    //TODO доделать реализацию диалогового окна (принятие данных и сохранение их в локальной бд)
     //TODO доделать динамичную отрисовку пончика!
 
 
     private void onClickAddQuantityCoin() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(router.getActivity(), AlertDialog.THEME_HOLO_DARK);
-        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-
-
-        builder
-                .setView(inflater.inflate(R.layout.item_start_dialog, null))
-                // Add action buttons
-                .setPositiveButton(R.string.addQuantity, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-
-                        addQuentityCoin.setQuantity(23.173);
-
-                        editQuentityUseCase
-                                .editCoin(addQuentityCoin);
-
-
                         //Show Toast
                         LayoutInflater inflater = router.getActivity().getLayoutInflater();
                         View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
@@ -179,14 +142,6 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
                         toast.setDuration(Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
                         toast.setView(toastLayout);
-                        toast.show();
-
-
-                    }
-                })
-                .setNegativeButton(R.string.back, null)
-                .show();
-
     }
 
 
@@ -291,6 +246,13 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
         float[] piePosition = {piePositionFirst, piePositionSecond, piePositionThird, piePositionAll};
         PieView.setPercent(piePosition);
     }
+
+    public void startapus(Coin coin) {
+        editQuentityUseCase
+                .editCoin(coin);
+    }
+
+
 
 
 }
