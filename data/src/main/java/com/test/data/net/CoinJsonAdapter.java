@@ -17,14 +17,12 @@ public class CoinJsonAdapter implements JsonDeserializer<CoinResponse>{
 
 
         JsonObject jsonObject = json.getAsJsonObject();
-        Map.Entry<String, JsonElement> entry = jsonObject.entrySet().iterator().next();
-        JsonObject coinJsonObject = entry.getValue().getAsJsonObject();
-        JsonElement coinElement = coinJsonObject.get("coin");
-        if (coinElement.isJsonNull()) {
-//            Coin coin = gson.fromJson(coinElement, Coin.class);
-            return null;
-        } else {
-            throw new Error("dsfdsfsdf");
-        }
+
+        CoinResponse coin = new CoinResponse();
+        coin.setName("adssadas");
+        coin.setPrice(123123213);
+        coin.setId(123123213);
+
+        return coin;
     }
 }

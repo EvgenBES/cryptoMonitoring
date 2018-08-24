@@ -15,16 +15,16 @@ import retrofit2.http.Query;
 
 public interface RestApi {
 
-    @GET("data/coin")
-    Observable<List<CoinResponse>> getAllCoin();
+//    @GET("data/coin")
+//    Observable<List<CoinResponse>> getAllCoin();
 
     @GET("data/coin")
     Observable<List<UserCoinResponse>> getCoin(
             @Query(value = "where", encoded = true) String coinId);
 
 
-//    @GET("ticker?limit=10")
-//    Observable<List<CoinResponse>> getAllCoin();
+    @GET("ticker?limit=10")
+    Observable<List<CoinResponse>> getAllCoin();
 
 
     @POST("data/coin/")
