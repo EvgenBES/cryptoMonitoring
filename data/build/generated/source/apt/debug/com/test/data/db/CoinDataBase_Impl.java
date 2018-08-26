@@ -32,11 +32,11 @@ public class CoinDataBase_Impl extends CoinDataBase {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `coins` (`id` INTEGER NOT NULL, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `circulatingSupply` INTEGER NOT NULL, `price` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `marketCap` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `volume24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `image` TEXT, `quantity` REAL NOT NULL, PRIMARY KEY(`id`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER NOT NULL, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `circulatingSupply` INTEGER NOT NULL, `price` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `marketCap` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `volume24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `image` TEXT, `quantity` REAL NOT NULL, PRIMARY KEY(`id`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `notif` (`id` INTEGER NOT NULL, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `circulatingSupply` INTEGER NOT NULL, `price` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `marketCap` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `volume24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `image` TEXT, `quantity` REAL NOT NULL, `pricePosition` REAL NOT NULL, `motionPrice` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `coins` (`idCoin` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `price` REAL NOT NULL, `marketCapUsd` INTEGER NOT NULL, `availableSupply` INTEGER NOT NULL, `totalSupply` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `lastUpdated` INTEGER NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `symbol` TEXT, `price` REAL NOT NULL, `quantity` REAL NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `notif` (`idCoin` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `symbol` TEXT, `pricePosition` REAL NOT NULL, `motionPrice` INTEGER NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f55aa32f816a77392b806de2b3df84d4\")");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6ef7d280fb2151ba139ae0c28b3a90c8\")");
       }
 
       @Override
@@ -69,41 +69,33 @@ public class CoinDataBase_Impl extends CoinDataBase {
       @Override
       protected void validateMigration(SupportSQLiteDatabase _db) {
         final HashMap<String, TableInfo.Column> _columnsCoins = new HashMap<String, TableInfo.Column>(13);
-        _columnsCoins.put("id", new TableInfo.Column("id", "INTEGER", true, 1));
+        _columnsCoins.put("idCoin", new TableInfo.Column("idCoin", "INTEGER", true, 1));
+        _columnsCoins.put("id", new TableInfo.Column("id", "TEXT", false, 0));
         _columnsCoins.put("name", new TableInfo.Column("name", "TEXT", false, 0));
         _columnsCoins.put("symbol", new TableInfo.Column("symbol", "TEXT", false, 0));
         _columnsCoins.put("rank", new TableInfo.Column("rank", "INTEGER", true, 0));
-        _columnsCoins.put("circulatingSupply", new TableInfo.Column("circulatingSupply", "INTEGER", true, 0));
         _columnsCoins.put("price", new TableInfo.Column("price", "REAL", true, 0));
-        _columnsCoins.put("percentChange24h", new TableInfo.Column("percentChange24h", "REAL", true, 0));
-        _columnsCoins.put("marketCap", new TableInfo.Column("marketCap", "INTEGER", true, 0));
+        _columnsCoins.put("marketCapUsd", new TableInfo.Column("marketCapUsd", "INTEGER", true, 0));
+        _columnsCoins.put("availableSupply", new TableInfo.Column("availableSupply", "INTEGER", true, 0));
+        _columnsCoins.put("totalSupply", new TableInfo.Column("totalSupply", "INTEGER", true, 0));
         _columnsCoins.put("percentChange1h", new TableInfo.Column("percentChange1h", "REAL", true, 0));
-        _columnsCoins.put("volume24h", new TableInfo.Column("volume24h", "REAL", true, 0));
+        _columnsCoins.put("percentChange24h", new TableInfo.Column("percentChange24h", "REAL", true, 0));
         _columnsCoins.put("percentChange7d", new TableInfo.Column("percentChange7d", "REAL", true, 0));
-        _columnsCoins.put("image", new TableInfo.Column("image", "TEXT", false, 0));
-        _columnsCoins.put("quantity", new TableInfo.Column("quantity", "REAL", true, 0));
+        _columnsCoins.put("lastUpdated", new TableInfo.Column("lastUpdated", "INTEGER", true, 0));
         final HashSet<TableInfo.ForeignKey> _foreignKeysCoins = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesCoins = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoCoins = new TableInfo("coins", _columnsCoins, _foreignKeysCoins, _indicesCoins);
         final TableInfo _existingCoins = TableInfo.read(_db, "coins");
         if (! _infoCoins.equals(_existingCoins)) {
-          throw new IllegalStateException("Migration didn't properly handle coins(com.test.data.entity.CoinResponse).\n"
+          throw new IllegalStateException("Migration didn't properly handle coins(com.test.data.entity.CoinResponces).\n"
                   + " Expected:\n" + _infoCoins + "\n"
                   + " Found:\n" + _existingCoins);
         }
-        final HashMap<String, TableInfo.Column> _columnsUser = new HashMap<String, TableInfo.Column>(13);
+        final HashMap<String, TableInfo.Column> _columnsUser = new HashMap<String, TableInfo.Column>(5);
         _columnsUser.put("id", new TableInfo.Column("id", "INTEGER", true, 1));
         _columnsUser.put("name", new TableInfo.Column("name", "TEXT", false, 0));
         _columnsUser.put("symbol", new TableInfo.Column("symbol", "TEXT", false, 0));
-        _columnsUser.put("rank", new TableInfo.Column("rank", "INTEGER", true, 0));
-        _columnsUser.put("circulatingSupply", new TableInfo.Column("circulatingSupply", "INTEGER", true, 0));
         _columnsUser.put("price", new TableInfo.Column("price", "REAL", true, 0));
-        _columnsUser.put("percentChange24h", new TableInfo.Column("percentChange24h", "REAL", true, 0));
-        _columnsUser.put("marketCap", new TableInfo.Column("marketCap", "INTEGER", true, 0));
-        _columnsUser.put("percentChange1h", new TableInfo.Column("percentChange1h", "REAL", true, 0));
-        _columnsUser.put("volume24h", new TableInfo.Column("volume24h", "REAL", true, 0));
-        _columnsUser.put("percentChange7d", new TableInfo.Column("percentChange7d", "REAL", true, 0));
-        _columnsUser.put("image", new TableInfo.Column("image", "TEXT", false, 0));
         _columnsUser.put("quantity", new TableInfo.Column("quantity", "REAL", true, 0));
         final HashSet<TableInfo.ForeignKey> _foreignKeysUser = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesUser = new HashSet<TableInfo.Index>(0);
@@ -114,20 +106,10 @@ public class CoinDataBase_Impl extends CoinDataBase {
                   + " Expected:\n" + _infoUser + "\n"
                   + " Found:\n" + _existingUser);
         }
-        final HashMap<String, TableInfo.Column> _columnsNotif = new HashMap<String, TableInfo.Column>(15);
-        _columnsNotif.put("id", new TableInfo.Column("id", "INTEGER", true, 1));
+        final HashMap<String, TableInfo.Column> _columnsNotif = new HashMap<String, TableInfo.Column>(5);
+        _columnsNotif.put("idCoin", new TableInfo.Column("idCoin", "INTEGER", true, 1));
         _columnsNotif.put("name", new TableInfo.Column("name", "TEXT", false, 0));
         _columnsNotif.put("symbol", new TableInfo.Column("symbol", "TEXT", false, 0));
-        _columnsNotif.put("rank", new TableInfo.Column("rank", "INTEGER", true, 0));
-        _columnsNotif.put("circulatingSupply", new TableInfo.Column("circulatingSupply", "INTEGER", true, 0));
-        _columnsNotif.put("price", new TableInfo.Column("price", "REAL", true, 0));
-        _columnsNotif.put("percentChange24h", new TableInfo.Column("percentChange24h", "REAL", true, 0));
-        _columnsNotif.put("marketCap", new TableInfo.Column("marketCap", "INTEGER", true, 0));
-        _columnsNotif.put("percentChange1h", new TableInfo.Column("percentChange1h", "REAL", true, 0));
-        _columnsNotif.put("volume24h", new TableInfo.Column("volume24h", "REAL", true, 0));
-        _columnsNotif.put("percentChange7d", new TableInfo.Column("percentChange7d", "REAL", true, 0));
-        _columnsNotif.put("image", new TableInfo.Column("image", "TEXT", false, 0));
-        _columnsNotif.put("quantity", new TableInfo.Column("quantity", "REAL", true, 0));
         _columnsNotif.put("pricePosition", new TableInfo.Column("pricePosition", "REAL", true, 0));
         _columnsNotif.put("motionPrice", new TableInfo.Column("motionPrice", "INTEGER", true, 0));
         final HashSet<TableInfo.ForeignKey> _foreignKeysNotif = new HashSet<TableInfo.ForeignKey>(0);
@@ -140,7 +122,7 @@ public class CoinDataBase_Impl extends CoinDataBase {
                   + " Found:\n" + _existingNotif);
         }
       }
-    }, "f55aa32f816a77392b806de2b3df84d4", "41444644102b1df3c3a1853811d15d49");
+    }, "6ef7d280fb2151ba139ae0c28b3a90c8", "cc8734c8671a8e593ab8fe9b040fa957");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

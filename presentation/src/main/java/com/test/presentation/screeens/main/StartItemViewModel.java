@@ -27,7 +27,7 @@ public class StartItemViewModel extends BaseItemViewModel<Coin> {
 
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
-        LoadImagePicaso.loaderAvatar(view, imageUrl);
+
     }
 
     private int position = 0;
@@ -53,7 +53,6 @@ public class StartItemViewModel extends BaseItemViewModel<Coin> {
         }
         symbol.set(coin.getSymbol());
         quantity.set(String.valueOf(formatQuadrupleZero.format(coin.getQuantity())));
-        imageUrl.set(coin.getImage());
     }
 
 

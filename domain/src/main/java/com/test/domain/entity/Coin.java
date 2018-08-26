@@ -13,19 +13,17 @@ public class Coin implements DomainModel {
     private double percentChange1h;
     private double volume24h;
     private double percentChange7d;
-    private String image;
     private double quantity;
     private boolean motionPrice;
     private double pricePosition;
 
 
     //Constructor get all coin local bd
-    public Coin(long id, String name, String symbol, double price, String image, double quantity, double pricePosition, boolean motionPrice) {
+    public Coin(long id, String name, String symbol, double price, double quantity, double pricePosition, boolean motionPrice) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
         this.price = price;
-        this.image = image;
         this.quantity = quantity;
         this.pricePosition = pricePosition;
         this.motionPrice = motionPrice;
@@ -33,12 +31,11 @@ public class Coin implements DomainModel {
 
 
     //Constructor get all coin internet
-    public Coin(long id, String name, String symbol, double price, String image, double quantity) {
+    public Coin(long id, String name, String symbol, double price, double quantity) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
         this.price = price;
-        this.image = image;
         this.quantity = quantity;
     }
 
@@ -50,13 +47,19 @@ public class Coin implements DomainModel {
     }
 
     //Constructor Add Notification Coin
-    public Coin(long id, String name, String symbol, String image, double pricePosition, boolean motionPrice) {
+    public Coin(long id, String name, String symbol, double pricePosition, boolean motionPrice) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
-        this.image = image;
         this.pricePosition = pricePosition;
         this.motionPrice = motionPrice;
+    }
+
+
+    public Coin(String name, String symbol, double price) {
+        this.name = name;
+        this.symbol = symbol;
+        this.price = price;
     }
 
     //Delete
@@ -140,7 +143,4 @@ public class Coin implements DomainModel {
         return percentChange7d;
     }
 
-    public String getImage() {
-        return image;
-    }
 }

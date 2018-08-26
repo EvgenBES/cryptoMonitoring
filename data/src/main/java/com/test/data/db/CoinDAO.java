@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.test.data.entity.CoinResponces;
 import com.test.data.entity.CoinResponse;
 
 import java.util.List;
@@ -17,17 +18,17 @@ public interface CoinDAO {
     String TABLE_NAME = "coins";
 
     @Insert
-    void insert(CoinResponse coinResponse); //add coin
+    void insert(CoinResponces coinResponces); //add coin
 
     @Update
-    void update(CoinResponse coinResponse);
+    void update(CoinResponces coinResponces);
 
     @Delete
-    void delete(CoinResponse coinResponse);
+    void delete(CoinResponces coinResponces);
 
     @Query("DELETE FROM " + TABLE_NAME)
     void deleteAll();
 
     @Query("SELECT * FROM " + TABLE_NAME)
-    Flowable<List<CoinResponse>> getAll();
+    Flowable<List<CoinResponces>> getAll();
 }

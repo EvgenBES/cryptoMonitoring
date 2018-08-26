@@ -11,89 +11,29 @@ import com.test.domain.entity.Coin;
 @Entity(tableName = UserCoinDAO.TABLE_NAME)
 public class UserCoinResponse implements DataModel {
 
-    @PrimaryKey
-    @SerializedName("id")
-    @Expose
-    private long id;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
-    @SerializedName("name")
-    @Expose
     private String name;
-
-    @SerializedName("symbol")
-    @Expose
     private String symbol;
-
-    @SerializedName("rank")
-    @Expose
-    private long rank;
-
-    @SerializedName("circulating_supply")
-    @Expose
-    private long circulatingSupply;
-
-    @SerializedName("price")
-    @Expose
     private double price;
-
-    @SerializedName("percent_change_24h")
-    @Expose
-    private double percentChange24h;
-
-    @SerializedName("market_cap")
-    @Expose
-    private long marketCap;
-
-    @SerializedName("percent_change_1h")
-    @Expose
-    private double percentChange1h;
-
-    @SerializedName("volume_24h")
-    @Expose
-    private double volume24h;
-
-    @SerializedName("percent_change_7d")
-    @Expose
-    private double percentChange7d;
-
-    @SerializedName("image")
-    @Expose
-    private String image;
-
-    @SerializedName("quantity")
-    @Expose
     private double quantity;
 
-    public UserCoinResponse(long id, String name, String symbol, double price, String image, double quantity) {
+
+    //Constructor for Update coin local db
+    public UserCoinResponse(int id, String name, String symbol, double price, double quantity) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
         this.price = price;
-        this.image = image;
         this.quantity = quantity;
     }
 
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -113,22 +53,6 @@ public class UserCoinResponse implements DataModel {
         this.symbol = symbol;
     }
 
-    public long getRank() {
-        return rank;
-    }
-
-    public void setRank(long rank) {
-        this.rank = rank;
-    }
-
-    public long getCirculatingSupply() {
-        return circulatingSupply;
-    }
-
-    public void setCirculatingSupply(long circulatingSupply) {
-        this.circulatingSupply = circulatingSupply;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -137,43 +61,11 @@ public class UserCoinResponse implements DataModel {
         this.price = price;
     }
 
-    public double getPercentChange24h() {
-        return percentChange24h;
+    public double getQuantity() {
+        return quantity;
     }
 
-    public void setPercentChange24h(double percentChange24h) {
-        this.percentChange24h = percentChange24h;
-    }
-
-    public long getMarketCap() {
-        return marketCap;
-    }
-
-    public void setMarketCap(long marketCap) {
-        this.marketCap = marketCap;
-    }
-
-    public double getPercentChange1h() {
-        return percentChange1h;
-    }
-
-    public void setPercentChange1h(double percentChange1h) {
-        this.percentChange1h = percentChange1h;
-    }
-
-    public double getVolume24h() {
-        return volume24h;
-    }
-
-    public void setVolume24h(double volume24h) {
-        this.volume24h = volume24h;
-    }
-
-    public double getPercentChange7d() {
-        return percentChange7d;
-    }
-
-    public void setPercentChange7d(double percentChange7d) {
-        this.percentChange7d = percentChange7d;
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
     }
 }

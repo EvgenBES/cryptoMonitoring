@@ -35,12 +35,12 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
     this.__insertionAdapterOfNotifCoinResponse = new EntityInsertionAdapter<NotifCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `notif`(`id`,`name`,`symbol`,`rank`,`circulatingSupply`,`price`,`percentChange24h`,`marketCap`,`percentChange1h`,`volume24h`,`percentChange7d`,`image`,`quantity`,`pricePosition`,`motionPrice`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `notif`(`idCoin`,`name`,`symbol`,`pricePosition`,`motionPrice`) VALUES (nullif(?, 0),?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, NotifCoinResponse value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getIdCoin());
         if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
@@ -51,35 +51,21 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
         } else {
           stmt.bindString(3, value.getSymbol());
         }
-        stmt.bindLong(4, value.getRank());
-        stmt.bindLong(5, value.getCirculatingSupply());
-        stmt.bindDouble(6, value.getPrice());
-        stmt.bindDouble(7, value.getPercentChange24h());
-        stmt.bindLong(8, value.getMarketCap());
-        stmt.bindDouble(9, value.getPercentChange1h());
-        stmt.bindDouble(10, value.getVolume24h());
-        stmt.bindDouble(11, value.getPercentChange7d());
-        if (value.getImage() == null) {
-          stmt.bindNull(12);
-        } else {
-          stmt.bindString(12, value.getImage());
-        }
-        stmt.bindDouble(13, value.getQuantity());
-        stmt.bindDouble(14, value.getPricePosition());
+        stmt.bindDouble(4, value.getPricePosition());
         final int _tmp;
         _tmp = value.getMotionPrice() ? 1 : 0;
-        stmt.bindLong(15, _tmp);
+        stmt.bindLong(5, _tmp);
       }
     };
     this.__updateAdapterOfNotifCoinResponse = new EntityDeletionOrUpdateAdapter<NotifCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `notif` SET `id` = ?,`name` = ?,`symbol` = ?,`rank` = ?,`circulatingSupply` = ?,`price` = ?,`percentChange24h` = ?,`marketCap` = ?,`percentChange1h` = ?,`volume24h` = ?,`percentChange7d` = ?,`image` = ?,`quantity` = ?,`pricePosition` = ?,`motionPrice` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `notif` SET `idCoin` = ?,`name` = ?,`symbol` = ?,`pricePosition` = ?,`motionPrice` = ? WHERE `idCoin` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, NotifCoinResponse value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getIdCoin());
         if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
@@ -90,31 +76,17 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
         } else {
           stmt.bindString(3, value.getSymbol());
         }
-        stmt.bindLong(4, value.getRank());
-        stmt.bindLong(5, value.getCirculatingSupply());
-        stmt.bindDouble(6, value.getPrice());
-        stmt.bindDouble(7, value.getPercentChange24h());
-        stmt.bindLong(8, value.getMarketCap());
-        stmt.bindDouble(9, value.getPercentChange1h());
-        stmt.bindDouble(10, value.getVolume24h());
-        stmt.bindDouble(11, value.getPercentChange7d());
-        if (value.getImage() == null) {
-          stmt.bindNull(12);
-        } else {
-          stmt.bindString(12, value.getImage());
-        }
-        stmt.bindDouble(13, value.getQuantity());
-        stmt.bindDouble(14, value.getPricePosition());
+        stmt.bindDouble(4, value.getPricePosition());
         final int _tmp;
         _tmp = value.getMotionPrice() ? 1 : 0;
-        stmt.bindLong(15, _tmp);
-        stmt.bindLong(16, value.getId());
+        stmt.bindLong(5, _tmp);
+        stmt.bindLong(6, value.getIdCoin());
       }
     };
     this.__preparedStmtOfDelete = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
-        final String _query = "DELETE FROM notif WHERE id = ?";
+        final String _query = "DELETE FROM notif WHERE idCoin = ?";
         return _query;
       }
     };
@@ -186,66 +158,27 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
       public List<NotifCoinResponse> call() throws Exception {
         final Cursor _cursor = __db.query(_statement);
         try {
-          final int _cursorIndexOfId = _cursor.getColumnIndexOrThrow("id");
+          final int _cursorIndexOfIdCoin = _cursor.getColumnIndexOrThrow("idCoin");
           final int _cursorIndexOfName = _cursor.getColumnIndexOrThrow("name");
           final int _cursorIndexOfSymbol = _cursor.getColumnIndexOrThrow("symbol");
-          final int _cursorIndexOfRank = _cursor.getColumnIndexOrThrow("rank");
-          final int _cursorIndexOfCirculatingSupply = _cursor.getColumnIndexOrThrow("circulatingSupply");
-          final int _cursorIndexOfPrice = _cursor.getColumnIndexOrThrow("price");
-          final int _cursorIndexOfPercentChange24h = _cursor.getColumnIndexOrThrow("percentChange24h");
-          final int _cursorIndexOfMarketCap = _cursor.getColumnIndexOrThrow("marketCap");
-          final int _cursorIndexOfPercentChange1h = _cursor.getColumnIndexOrThrow("percentChange1h");
-          final int _cursorIndexOfVolume24h = _cursor.getColumnIndexOrThrow("volume24h");
-          final int _cursorIndexOfPercentChange7d = _cursor.getColumnIndexOrThrow("percentChange7d");
-          final int _cursorIndexOfImage = _cursor.getColumnIndexOrThrow("image");
-          final int _cursorIndexOfQuantity = _cursor.getColumnIndexOrThrow("quantity");
           final int _cursorIndexOfPricePosition = _cursor.getColumnIndexOrThrow("pricePosition");
           final int _cursorIndexOfMotionPrice = _cursor.getColumnIndexOrThrow("motionPrice");
           final List<NotifCoinResponse> _result = new ArrayList<NotifCoinResponse>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final NotifCoinResponse _item;
-            final long _tmpId;
-            _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final int _tmpIdCoin;
+            _tmpIdCoin = _cursor.getInt(_cursorIndexOfIdCoin);
             final String _tmpName;
             _tmpName = _cursor.getString(_cursorIndexOfName);
             final String _tmpSymbol;
             _tmpSymbol = _cursor.getString(_cursorIndexOfSymbol);
-            final String _tmpImage;
-            _tmpImage = _cursor.getString(_cursorIndexOfImage);
             final double _tmpPricePosition;
             _tmpPricePosition = _cursor.getDouble(_cursorIndexOfPricePosition);
             final boolean _tmpMotionPrice;
             final int _tmp;
             _tmp = _cursor.getInt(_cursorIndexOfMotionPrice);
             _tmpMotionPrice = _tmp != 0;
-            _item = new NotifCoinResponse(_tmpId,_tmpName,_tmpSymbol,_tmpImage,_tmpPricePosition,_tmpMotionPrice);
-            final long _tmpRank;
-            _tmpRank = _cursor.getLong(_cursorIndexOfRank);
-            _item.setRank(_tmpRank);
-            final long _tmpCirculatingSupply;
-            _tmpCirculatingSupply = _cursor.getLong(_cursorIndexOfCirculatingSupply);
-            _item.setCirculatingSupply(_tmpCirculatingSupply);
-            final double _tmpPrice;
-            _tmpPrice = _cursor.getDouble(_cursorIndexOfPrice);
-            _item.setPrice(_tmpPrice);
-            final double _tmpPercentChange24h;
-            _tmpPercentChange24h = _cursor.getDouble(_cursorIndexOfPercentChange24h);
-            _item.setPercentChange24h(_tmpPercentChange24h);
-            final long _tmpMarketCap;
-            _tmpMarketCap = _cursor.getLong(_cursorIndexOfMarketCap);
-            _item.setMarketCap(_tmpMarketCap);
-            final double _tmpPercentChange1h;
-            _tmpPercentChange1h = _cursor.getDouble(_cursorIndexOfPercentChange1h);
-            _item.setPercentChange1h(_tmpPercentChange1h);
-            final double _tmpVolume24h;
-            _tmpVolume24h = _cursor.getDouble(_cursorIndexOfVolume24h);
-            _item.setVolume24h(_tmpVolume24h);
-            final double _tmpPercentChange7d;
-            _tmpPercentChange7d = _cursor.getDouble(_cursorIndexOfPercentChange7d);
-            _item.setPercentChange7d(_tmpPercentChange7d);
-            final double _tmpQuantity;
-            _tmpQuantity = _cursor.getDouble(_cursorIndexOfQuantity);
-            _item.setQuantity(_tmpQuantity);
+            _item = new NotifCoinResponse(_tmpIdCoin,_tmpName,_tmpSymbol,_tmpPricePosition,_tmpMotionPrice);
             _result.add(_item);
           }
           return _result;

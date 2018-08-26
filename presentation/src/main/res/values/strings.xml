@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Crypto Portfolio</string>
+    <string name="app_name">Crypto Monitoring</string>
 
     <string name="error_internet_not_available">Интернет не доступен</string>
     <string name="error_server_not_available">Сервер не доступен</string>

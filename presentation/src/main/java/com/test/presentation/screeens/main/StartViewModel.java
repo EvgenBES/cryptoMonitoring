@@ -247,7 +247,7 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
         PieView.setPercent(piePosition);
     }
 
-    public void startapus(Coin coin) {
+    public void addQuantityCoinBd(Coin coin) {
         editQuentityUseCase
                 .editCoin(coin);
     }

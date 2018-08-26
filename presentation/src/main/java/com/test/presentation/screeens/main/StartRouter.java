@@ -29,6 +29,6 @@ public class StartRouter extends BaseRouter<StartViewActivity> {
 
     public void loadQuantityCoins(Coin coin) {
         StartViewModel model = new StartViewModel();
-        model.startapus(coin);
+        model.addQuantityCoinBd(coin);
     }
 }

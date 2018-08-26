@@ -35,12 +35,12 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
     this.__insertionAdapterOfUserCoinResponse = new EntityInsertionAdapter<UserCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `user`(`id`,`name`,`symbol`,`rank`,`circulatingSupply`,`price`,`percentChange24h`,`marketCap`,`percentChange1h`,`volume24h`,`percentChange7d`,`image`,`quantity`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `user`(`id`,`name`,`symbol`,`price`,`quantity`) VALUES (nullif(?, 0),?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, UserCoinResponse value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.id);
         if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
@@ -51,31 +51,19 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
         } else {
           stmt.bindString(3, value.getSymbol());
         }
-        stmt.bindLong(4, value.getRank());
-        stmt.bindLong(5, value.getCirculatingSupply());
-        stmt.bindDouble(6, value.getPrice());
-        stmt.bindDouble(7, value.getPercentChange24h());
-        stmt.bindLong(8, value.getMarketCap());
-        stmt.bindDouble(9, value.getPercentChange1h());
-        stmt.bindDouble(10, value.getVolume24h());
-        stmt.bindDouble(11, value.getPercentChange7d());
-        if (value.getImage() == null) {
-          stmt.bindNull(12);
-        } else {
-          stmt.bindString(12, value.getImage());
-        }
-        stmt.bindDouble(13, value.getQuantity());
+        stmt.bindDouble(4, value.getPrice());
+        stmt.bindDouble(5, value.getQuantity());
       }
     };
     this.__updateAdapterOfUserCoinResponse = new EntityDeletionOrUpdateAdapter<UserCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `user` SET `id` = ?,`name` = ?,`symbol` = ?,`rank` = ?,`circulatingSupply` = ?,`price` = ?,`percentChange24h` = ?,`marketCap` = ?,`percentChange1h` = ?,`volume24h` = ?,`percentChange7d` = ?,`image` = ?,`quantity` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `user` SET `id` = ?,`name` = ?,`symbol` = ?,`price` = ?,`quantity` = ? WHERE `id` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, UserCoinResponse value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.id);
         if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
@@ -86,21 +74,9 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
         } else {
           stmt.bindString(3, value.getSymbol());
         }
-        stmt.bindLong(4, value.getRank());
-        stmt.bindLong(5, value.getCirculatingSupply());
-        stmt.bindDouble(6, value.getPrice());
-        stmt.bindDouble(7, value.getPercentChange24h());
-        stmt.bindLong(8, value.getMarketCap());
-        stmt.bindDouble(9, value.getPercentChange1h());
-        stmt.bindDouble(10, value.getVolume24h());
-        stmt.bindDouble(11, value.getPercentChange7d());
-        if (value.getImage() == null) {
-          stmt.bindNull(12);
-        } else {
-          stmt.bindString(12, value.getImage());
-        }
-        stmt.bindDouble(13, value.getQuantity());
-        stmt.bindLong(14, value.getId());
+        stmt.bindDouble(4, value.getPrice());
+        stmt.bindDouble(5, value.getQuantity());
+        stmt.bindLong(6, value.id);
       }
     };
     this.__preparedStmtOfDelete = new SharedSQLiteStatement(__db) {
@@ -181,53 +157,22 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
           final int _cursorIndexOfId = _cursor.getColumnIndexOrThrow("id");
           final int _cursorIndexOfName = _cursor.getColumnIndexOrThrow("name");
           final int _cursorIndexOfSymbol = _cursor.getColumnIndexOrThrow("symbol");
-          final int _cursorIndexOfRank = _cursor.getColumnIndexOrThrow("rank");
-          final int _cursorIndexOfCirculatingSupply = _cursor.getColumnIndexOrThrow("circulatingSupply");
           final int _cursorIndexOfPrice = _cursor.getColumnIndexOrThrow("price");
-          final int _cursorIndexOfPercentChange24h = _cursor.getColumnIndexOrThrow("percentChange24h");
-          final int _cursorIndexOfMarketCap = _cursor.getColumnIndexOrThrow("marketCap");
-          final int _cursorIndexOfPercentChange1h = _cursor.getColumnIndexOrThrow("percentChange1h");
-          final int _cursorIndexOfVolume24h = _cursor.getColumnIndexOrThrow("volume24h");
-          final int _cursorIndexOfPercentChange7d = _cursor.getColumnIndexOrThrow("percentChange7d");
-          final int _cursorIndexOfImage = _cursor.getColumnIndexOrThrow("image");
           final int _cursorIndexOfQuantity = _cursor.getColumnIndexOrThrow("quantity");
           final List<UserCoinResponse> _result = new ArrayList<UserCoinResponse>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final UserCoinResponse _item;
-            final long _tmpId;
-            _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final int _tmpId;
+            _tmpId = _cursor.getInt(_cursorIndexOfId);
             final String _tmpName;
             _tmpName = _cursor.getString(_cursorIndexOfName);
             final String _tmpSymbol;
             _tmpSymbol = _cursor.getString(_cursorIndexOfSymbol);
             final double _tmpPrice;
             _tmpPrice = _cursor.getDouble(_cursorIndexOfPrice);
-            final String _tmpImage;
-            _tmpImage = _cursor.getString(_cursorIndexOfImage);
             final double _tmpQuantity;
             _tmpQuantity = _cursor.getDouble(_cursorIndexOfQuantity);
-            _item = new UserCoinResponse(_tmpId,_tmpName,_tmpSymbol,_tmpPrice,_tmpImage,_tmpQuantity);
-            final long _tmpRank;
-            _tmpRank = _cursor.getLong(_cursorIndexOfRank);
-            _item.setRank(_tmpRank);
-            final long _tmpCirculatingSupply;
-            _tmpCirculatingSupply = _cursor.getLong(_cursorIndexOfCirculatingSupply);
-            _item.setCirculatingSupply(_tmpCirculatingSupply);
-            final double _tmpPercentChange24h;
-            _tmpPercentChange24h = _cursor.getDouble(_cursorIndexOfPercentChange24h);
-            _item.setPercentChange24h(_tmpPercentChange24h);
-            final long _tmpMarketCap;
-            _tmpMarketCap = _cursor.getLong(_cursorIndexOfMarketCap);
-            _item.setMarketCap(_tmpMarketCap);
-            final double _tmpPercentChange1h;
-            _tmpPercentChange1h = _cursor.getDouble(_cursorIndexOfPercentChange1h);
-            _item.setPercentChange1h(_tmpPercentChange1h);
-            final double _tmpVolume24h;
-            _tmpVolume24h = _cursor.getDouble(_cursorIndexOfVolume24h);
-            _item.setVolume24h(_tmpVolume24h);
-            final double _tmpPercentChange7d;
-            _tmpPercentChange7d = _cursor.getDouble(_cursorIndexOfPercentChange7d);
-            _item.setPercentChange7d(_tmpPercentChange7d);
+            _item = new UserCoinResponse(_tmpId,_tmpName,_tmpSymbol,_tmpPrice,_tmpQuantity);
             _result.add(_item);
           }
           return _result;

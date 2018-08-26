@@ -11,23 +11,41 @@ import io.reactivex.Observable;
 
 public interface CoinRepository {
 
+    //GET Internet
     Observable<List<Coin>> getAll();
 
+
+
+
+    //GET Local BD UserCoin
     Flowable<List<Coin>> getBdCoin();
 
-    Flowable<List<Coin>> getAllNotif();
+    void addUserCoin(Coin coin);
 
     void update(Coin coin);
 
+    void deleteUserCoin(long coinId);
+
+
+
+    //GET Local BD NotifUser
+    Flowable<List<Coin>> getAllNotif();
+
     void addNotif(Coin coin);
-
-    Observable<Coin> getOneUser(String id);
-
-    Completable delete(String id);
 
     void deleteNotif(long coinId);
 
-    void deleteUserCoin(long coinId);
+
+
+
+
+
+
+
+
+//    Observable<Coin> getOneUser(String id);
+
+    Completable delete(String id);
 
     Observable<List<Coin>> search(Search search);
 }

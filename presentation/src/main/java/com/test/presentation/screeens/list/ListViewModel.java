@@ -1,7 +1,5 @@
 package com.test.presentation.screeens.list;
 
-import android.test.com.testproject.R;
-
 import com.test.app.App;
 import com.test.domain.entity.Coin;
 import com.test.presentation.base.BaseViewModel;
@@ -24,6 +22,6 @@ public class ListViewModel extends BaseViewModel<ListRouter, Coin>{
     }
 
     public ListViewModel() {
-
     }
+
 }

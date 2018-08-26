@@ -27,7 +27,7 @@ public class LeftItemFragmentModel extends BaseItemViewModel<Coin> {
 
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
-        LoadImagePicaso.loaderAvatar(view, imageUrl);
+
     }
 
     //два вида формата для отображения цены
@@ -55,7 +55,6 @@ public class LeftItemFragmentModel extends BaseItemViewModel<Coin> {
         }
         symbol.set(coin.getSymbol());
         quantity.set(String.valueOf(formatQuadrupleZero.format(coin.getQuantity())));
-        imageUrl.set(coin.getImage());
     }
 
 

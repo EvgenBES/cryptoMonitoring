@@ -12,7 +12,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class ListRightFragmentItemAdapter extends BaseRecyclerViewAdapter<Coin, RightItemFragmentModel> {
 
-    private PublishSubject<ClickedItemModel> buttonOneClickSubject = PublishSubject.create();
+    private PublishSubject<ClickedItemModel<Coin>> buttonOneClickSubject = PublishSubject.create();
 
     @NonNull
     @Override
@@ -20,7 +20,7 @@ public class ListRightFragmentItemAdapter extends BaseRecyclerViewAdapter<Coin, 
         return RightItemFragmentHolder.create(parent, new RightItemFragmentModel(buttonOneClickSubject));
     }
 
-    public Observable<ClickedItemModel> observeButtonOneClick() {
+    public Observable<ClickedItemModel<Coin>> observeButtonOneClick() {
         return buttonOneClickSubject;
     }
 }

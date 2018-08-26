@@ -21,8 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.test.presentation.screeens.list.ListViewActivity" />
-        <activity android:name="com.test.presentation.screeens.notification.NotifViewActivity" />
+        <activity android:name="com.test.presentation.screeens.list.ListViewActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.test.presentation.screeens.notification.NotifViewActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

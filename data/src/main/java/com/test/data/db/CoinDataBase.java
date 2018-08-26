@@ -5,12 +5,13 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.test.data.entity.CoinResponces;
 import com.test.data.entity.CoinResponse;
 import com.test.data.entity.NotifCoinResponse;
 import com.test.data.entity.UserCoinResponse;
 
 @Database(entities = {
-        CoinResponse.class,
+        CoinResponces.class,
         UserCoinResponse.class,
         NotifCoinResponse.class}, version = 1)
 public abstract class CoinDataBase extends RoomDatabase {

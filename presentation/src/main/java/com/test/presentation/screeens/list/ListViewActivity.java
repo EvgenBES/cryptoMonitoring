@@ -84,4 +84,11 @@ public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityLi
         super.onPause();
         router.getActivity().finish();
     }
+
+
+    public int getResorsId (String symbol) {
+        int resorsId = 0;
+        resorsId = getResources().getIdentifier(symbol, "drawable", getPackageName());
+        return resorsId;
+    }
 }

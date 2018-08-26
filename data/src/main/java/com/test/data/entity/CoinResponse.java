@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName;
 import com.test.data.db.CoinDAO;
 import com.test.data.db.UserCoinDAO;
 
-@Entity(tableName = CoinDAO.TABLE_NAME)
+
 public class CoinResponse implements DataModel {
 
-    @PrimaryKey
+
     @SerializedName("id")
     @Expose
     private long id;

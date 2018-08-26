@@ -36,7 +36,6 @@ public class AddNotificationDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-
         View view = inflater.inflate(R.layout.item_notif_dialog, container, false);
 
         priceEdit = view.findViewById(R.id.notifPrice);
@@ -50,9 +49,11 @@ public class AddNotificationDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
 
+                int price = 0;
+                if (!priceEdit.getText().toString().equals("")) {
+                    price = Integer.valueOf(priceEdit.getText().toString());
+                }
 
-
-                int price = Integer.valueOf(priceEdit.getText().toString());
 
                 if (radioGroup.getCheckedRadioButtonId() == radioButtonBelow.getId()) {
                     motion = false;
@@ -60,7 +61,7 @@ public class AddNotificationDialog extends DialogFragment {
                     motion = true;
                 }
 
-                ((NotifViewActivity)getActivity()).addNotificationBd(new Coin(0, "Name", "Symbol", "Image", price, motion));
+                ((NotifViewActivity) getActivity()).addNotificationBd(new Coin(0, "Name", "Symbol", price, motion));
                 getDialog().dismiss();
             }
         });

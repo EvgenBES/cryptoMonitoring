@@ -4,6 +4,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.test.data.entity.CoinResponse;
+import com.test.data.entity.CoinResponces;
 import com.test.data.entity.HttpError;
 import com.test.data.entity.UserCoinResponse;
 import com.test.domain.entity.Coin;
@@ -52,7 +53,7 @@ public class RestService {
         this.restApi = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("https://api.coinmarketcap.com/v2/")
+                .baseUrl("https://api.coinmarketcap.com/v1/")
 //                .baseUrl("https://api.backendless.com/7FD5B830-F360-99EB-FF4A-77DE676AB800/D4AECF17-A9CD-613E-FFAA-803DEBD1D700/")
                 .client(okHttp)
                 .build()
@@ -63,17 +64,17 @@ public class RestService {
 
 
 
-    public Observable<List<CoinResponse>> getAllCoin() {
+    public Observable<List<CoinResponces>> getAllCoin() {
         return restApi
                 .getAllCoin()
                 .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
     }
 
-    public Observable<List<UserCoinResponse>> getCoin(String id) {
-        return restApi
-                .getCoin("id%3D" + id)
-                .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
-    }
+//    public Observable<List<UserCoinResponse>> getCoin(String id) {
+//        return restApi
+//                .getCoin("id%3D" + id)
+//                .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
+//    }
 
     public Observable<List<CoinResponse>> addCoin(UserCoinResponse userCoinResponse) {
         return restApi

@@ -121,7 +121,6 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
                                 editCoinId,
                                 "Magarita",
                                 "MGT",
-                                String.format("https://s2.coinmarketcap.com/static/img/coins/64x64/%d.png", 1 + random.nextInt(98)),
                                 random.nextInt(999),
                                 random.nextBoolean()));
 

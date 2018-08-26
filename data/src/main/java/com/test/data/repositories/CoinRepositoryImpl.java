@@ -1,7 +1,7 @@
 package com.test.data.repositories;
 
 import com.test.data.db.CoinDataBase;
-import com.test.data.entity.CoinResponse;
+import com.test.data.entity.CoinResponces;
 import com.test.data.entity.NotifCoinResponse;
 import com.test.data.entity.UserCoinResponse;
 import com.test.data.net.RestService;
@@ -15,7 +15,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -39,22 +38,21 @@ public class CoinRepositoryImpl implements CoinRepository {
     public Observable<List<Coin>> getAll() {
         return restService
                 .getAllCoin()
-                .map(new Function<List<CoinResponse>, List<Coin>>() {
+                .map(new Function<List<CoinResponces>, List<Coin>>() {
                     @Override
-                    public List<Coin> apply(List<CoinResponse> coinResponses) throws Exception {
+                    public List<Coin> apply(List<CoinResponces> testItems) throws Exception {
 
                         coinDataBase.getCoinDAO().deleteAll();
 
                         final List<Coin> list = new ArrayList<>();
-                        for (CoinResponse coin : coinResponses) {
-                            list.add(new Coin(coin.getId(),
+                        for (CoinResponces coin : testItems) {
+                            list.add(new Coin(
                                     coin.getName(),
                                     coin.getSymbol(),
-                                    coin.getPrice(),
-                                    coin.getImage(),
-                                    coin.getQuantity()));
+                                    coin.getPrice()));
 
                             coinDataBase.getCoinDAO().insert(coin);
+
                         }
                         return list;
                     }
@@ -71,14 +69,49 @@ public class CoinRepositoryImpl implements CoinRepository {
                     public List<Coin> apply(List<UserCoinResponse> userCoinResponses) throws Exception {
                         final List<Coin> list = new ArrayList<>();
                         for (UserCoinResponse coin : userCoinResponses) {
-                            list.add(new Coin(coin.getId(),
+                            list.add(new Coin(
+                                    coin.getId(),
                                     coin.getName(),
                                     coin.getSymbol(),
                                     coin.getPrice(),
-                                    coin.getImage(),
                                     coin.getQuantity()));
                         }
                         return list;
+                    }
+                });
+    }
+
+    @Override
+    public void addUserCoin(Coin coin) {
+        UserCoinResponse userCoin = new UserCoinResponse(
+                0,
+                coin.getName(),
+                coin.getSymbol(),
+                coin.getPrice(),
+                coin.getQuantity()
+        );
+
+        Observable.just(coinDataBase)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<CoinDataBase>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(CoinDataBase coinDataBase) {
+                        coinDataBase.getUserDAO().insert(userCoin);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -93,15 +126,13 @@ public class CoinRepositoryImpl implements CoinRepository {
                     public List<Coin> apply(List<NotifCoinResponse> notifCoinResponses) throws Exception {
                         final List<Coin> list = new ArrayList<>();
                         for (NotifCoinResponse coin : notifCoinResponses) {
-                            list.add(new Coin(coin.getId(),
+                            list.add(new Coin(
+                                    coin.getIdCoin(),
                                     coin.getName(),
                                     coin.getSymbol(),
-                                    coin.getPrice(),
-                                    coin.getImage(),
-                                    coin.getQuantity(),
                                     coin.getPricePosition(),
                                     coin.getMotionPrice()
-                                  ));
+                            ));
                         }
                         return list;
                     }
@@ -112,11 +143,10 @@ public class CoinRepositoryImpl implements CoinRepository {
     public void update(Coin coin) {
 
         UserCoinResponse editCoin = new UserCoinResponse(
-                coin.getId(),
+                (int) coin.getId(),
                 coin.getName(),
                 coin.getSymbol(),
                 coin.getPrice(),
-                coin.getImage(),
                 coin.getQuantity()
         );
 
@@ -148,10 +178,9 @@ public class CoinRepositoryImpl implements CoinRepository {
     @Override
     public void addNotif(Coin coin) {
         NotifCoinResponse addNotifCoin = new NotifCoinResponse(
-                coin.getId(),
+                (int) coin.getId(),
                 coin.getName(),
                 coin.getSymbol(),
-                coin.getImage(),
                 coin.getPricePosition(),
                 coin.getMotionPrice()
         );
@@ -166,7 +195,6 @@ public class CoinRepositoryImpl implements CoinRepository {
 
                     @Override
                     public void onNext(CoinDataBase coinDataBase) {
-                        coinDataBase.getNotifDAO().delete(addNotifCoin.getId());
                         coinDataBase.getNotifDAO().insert(addNotifCoin);
                     }
 
@@ -183,20 +211,20 @@ public class CoinRepositoryImpl implements CoinRepository {
     }
 
 
-    @Override
-    public Observable<Coin> getOneUser(String id) {
-        return restService
-                .getCoin(id)
-                .map(new Function<List<UserCoinResponse>, Coin>() {
-                    @Override
-                    public Coin apply(List<UserCoinResponse> userCoinResponses) throws Exception {
-                        for (UserCoinResponse userCoinRespons : userCoinResponses) {
-                            coinDataBase.getUserDAO().insert(userCoinRespons);
-                        }
-                        return null;
-                    }
-                });
-    }
+//    @Override
+//    public Observable<Coin> getOneUser(String id) {
+//        return restService
+//                .getCoin(id)
+//                .map(new Function<List<UserCoinResponse>, Coin>() {
+//                    @Override
+//                    public Coin apply(List<UserCoinResponse> userCoinResponses) throws Exception {
+//                        for (UserCoinResponse userCoinRespons : userCoinResponses) {
+//                            coinDataBase.getUserDAO().insert(userCoinRespons);
+//                        }
+//                        return null;
+//                    }
+//                });
+//    }
 
     @Override
     public Completable delete(String id) {

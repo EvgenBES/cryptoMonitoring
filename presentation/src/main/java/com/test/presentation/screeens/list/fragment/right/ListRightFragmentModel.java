@@ -2,6 +2,7 @@ package com.test.presentation.screeens.list.fragment.right;
 
 import android.databinding.ObservableInt;
 import android.test.com.testproject.R;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
                     @Override
                     public void onNext(List<Coin> coins) {
                         adapter.setItems(coins);
+
                         sleep(1000);
                         coinProgress.set(View.GONE);
                     }
@@ -74,43 +76,72 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
                 });
 
 
+//        adapter
+//                .observeItemClick()
+//                .subscribe(new Observer<ClickedItemModel<Coin>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                    }
+//
+//                    @Override
+//
+//                    public void onNext(ClickedItemModel<Coin> coinClickedItemModel) {
+//
+//                        //Toast add coin user list
+////                        showCostomToast();
+//
+//                        Toast.makeText(App.getContext(), "You add " + coinClickedItemModel.getEntity().getName(), Toast.LENGTH_SHORT).show();
+//
+//                        addCoinUseCase
+//                                .addCoin(String.valueOf(coinClickedItemModel.getEntity().getId()))
+//                                .subscribe(new Observer<Coin>() {
+//                                    @Override
+//                                    public void onSubscribe(Disposable d) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(Coin coin) {
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onComplete() {
+//                                    }
+//                                });
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+
+
         adapter
-                .observeItemClick()
+                .observeButtonOneClick()
                 .subscribe(new Observer<ClickedItemModel<Coin>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
+                    public void onNext(ClickedItemModel<Coin> clickedItemModel) {
 
-                    public void onNext(ClickedItemModel<Coin> coinClickedItemModel) {
-
-                        //Toast add coin user list
-//                        showCostomToast();
-
-                        Toast.makeText(App.getContext(), "You add " + coinClickedItemModel.getEntity().getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.getContext(), "You add " + clickedItemModel.getEntity().getName(), Toast.LENGTH_SHORT).show();
 
                         addCoinUseCase
-                                .addCoin(String.valueOf(coinClickedItemModel.getEntity().getId()))
-                                .subscribe(new Observer<Coin>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Coin coin) {
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-                                    }
-                                });
+                                .addCoin(clickedItemModel.getEntity());
                     }
 
                     @Override

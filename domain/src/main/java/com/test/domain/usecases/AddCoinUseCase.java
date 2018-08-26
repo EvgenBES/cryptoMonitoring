@@ -19,10 +19,8 @@ public class AddCoinUseCase extends BaseUseCase {
         this.coinRepository = coinRepository;
     }
 
-        public Observable<Coin> addCoin(String userID) {
-            return coinRepository
-                    .getOneUser(userID)
-                    .subscribeOn(executionThread)
-                    .observeOn(postExecutionThread);
-        }
+    public void addCoin(Coin coin) {
+        coinRepository
+                .addUserCoin(coin);
+    }
 }
