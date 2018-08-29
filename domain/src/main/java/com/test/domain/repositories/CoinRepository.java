@@ -8,12 +8,15 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface CoinRepository {
 
     //GET Internet
-    Observable<List<Coin>> getAll();
+    Flowable<List<Coin>> getAll();
 
+
+    Flowable<List<Coin>> updateLocalBd();
 
 
 

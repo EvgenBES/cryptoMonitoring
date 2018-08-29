@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -63,11 +64,9 @@ public class RestService {
     }
 
 
-
-    public Observable<List<CoinResponces>> getAllCoin() {
+    public Flowable<List<CoinResponces>> getAllCoin() {
         return restApi
-                .getAllCoin()
-                .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
+                .getAllCoin();
     }
 
 //    public Observable<List<UserCoinResponse>> getCoin(String id) {

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 public class GetListCoinUseCase extends BaseUseCase {
@@ -21,7 +22,7 @@ public class GetListCoinUseCase extends BaseUseCase {
         this.coinRepository = coinRepository;
     }
 
-    public Observable<List<Coin>> getCoins() {
+    public Flowable<List<Coin>> getCoins() {
         return coinRepository
                 .getAll()
                 .subscribeOn(executionThread)

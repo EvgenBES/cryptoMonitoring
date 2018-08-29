@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.test.app.App;
 import com.test.domain.entity.Coin;
 import com.test.domain.usecases.AddCoinUseCase;
+import com.test.domain.usecases.GetBDCoinUseCase;
 import com.test.domain.usecases.GetListCoinUseCase;
 import com.test.presentation.base.BaseViewModel;
 import com.test.presentation.base.recycler.ClickedItemModel;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 import static android.os.SystemClock.sleep;
 
@@ -51,31 +53,46 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
     public ListRightFragmentModel() {
         getListCoinUseCase
                 .getCoins()
-                .subscribe(new Observer<List<Coin>>() {
+                .subscribe(new Consumer<List<Coin>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        getCompositeDisposable().add(d);
-                    }
-
-                    @Override
-                    public void onNext(List<Coin> coins) {
+                    public void accept(List<Coin> coins) throws Exception {
                         adapter.setItems(coins);
-
-                        sleep(1000);
+                        sleep(500);
                         coinProgress.set(View.GONE);
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-//                        router.showError(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                })
+                .isDisposed();
 
 
+
+//        getListCoinUseCase
+//                .getCoins()
+//                .subscribe(new Observer<List<Coin>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        getCompositeDisposable().add(d);
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<Coin> coins) {
+//                        adapter.setItems(coins);
+//
+//                        sleep(1000);
+//                        coinProgress.set(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+////                        router.showError(e);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                    }
+//                });
+
+
+            //Click item - open full info icon.
 //        adapter
 //                .observeItemClick()
 //                .subscribe(new Observer<ClickedItemModel<Coin>>() {
@@ -127,6 +144,7 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 //                });
 
 
+        //Click Button PLUS - add coin local bd
         adapter
                 .observeButtonOneClick()
                 .subscribe(new Observer<ClickedItemModel<Coin>>() {

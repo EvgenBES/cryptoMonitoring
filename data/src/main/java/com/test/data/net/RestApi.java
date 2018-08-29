@@ -7,6 +7,7 @@ import com.test.data.entity.UserCoinResponse;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -24,8 +25,8 @@ public interface RestApi {
 //            @Query(value = "where", encoded = true) String coinId);
 
 
-    @GET("ticker/?limit=10")
-    Observable<List<CoinResponces>> getAllCoin();
+    @GET("ticker/?limit=50")
+    Flowable<List<CoinResponces>> getAllCoin();
 
     @POST("data/coin/")
     Observable<UserCoinResponse> addCoin(@Body UserCoinResponse userCoinResponse);

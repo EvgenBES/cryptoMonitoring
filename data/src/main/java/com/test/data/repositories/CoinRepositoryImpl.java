@@ -1,13 +1,21 @@
 package com.test.data.repositories;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
+import com.test.data.R;
 import com.test.data.db.CoinDataBase;
 import com.test.data.entity.CoinResponces;
 import com.test.data.entity.NotifCoinResponse;
 import com.test.data.entity.UserCoinResponse;
 import com.test.data.net.RestService;
 import com.test.domain.entity.Coin;
+import com.test.domain.entity.Error;
+import com.test.domain.entity.ErrorType;
 import com.test.domain.entity.Search;
 import com.test.domain.repositories.CoinRepository;
+
+import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +25,12 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -26,7 +38,8 @@ public class CoinRepositoryImpl implements CoinRepository {
 
     private RestService restService;
     private CoinDataBase coinDataBase;
-    private long lastUserUpdateTime = 0;
+    private static long lastCoinUpdateTime = 0;
+    private final long TIMER_UPDATE_COIN = 300000;
 
     @Inject
     public CoinRepositoryImpl(RestService restService, CoinDataBase coinDataBase) {
@@ -34,30 +47,115 @@ public class CoinRepositoryImpl implements CoinRepository {
         this.coinDataBase = coinDataBase;
     }
 
+//    @Override
+//    public Observable<List<Coin>> getAll() {
+//        return restService
+//                .getAllCoin()
+//                .map(new Function<List<CoinResponces>, List<Coin>>() {
+//                    @Override
+//                    public List<Coin> apply(List<CoinResponces> testItems) throws Exception {
+//                        Log.e("AAQQ", "apply: 2");
+//                        coinDataBase.getCoinDAO().deleteAll();
+//
+//                        final List<Coin> list = new ArrayList<>();
+//                        for (CoinResponces coin : testItems) {
+//                            list.add(new Coin(
+//                                    coin.getName(),
+//                                    coin.getSymbol(),
+//                                    coin.getPrice()));
+//
+//                            coinDataBase.getCoinDAO().insert(coin);
+//                            Log.e("AAQQ", "apply: 4");
+//
+//                        }
+//                        return list;
+//                    }
+//                });
+//    }
+
+
     @Override
-    public Observable<List<Coin>> getAll() {
-        return restService
-                .getAllCoin()
+    public Flowable<List<Coin>> getAll() {
+        return coinDataBase
+                .getCoinDAO()
+                .getAll()
+                .flatMap(new Function<List<CoinResponces>, Publisher<List<CoinResponces>>>() {
+                    @Override
+                    public Publisher<List<CoinResponces>> apply(List<CoinResponces> coinResponces) throws Exception {
+                        if (coinResponces.isEmpty() ||
+                                (lastCoinUpdateTime + TIMER_UPDATE_COIN) < System.currentTimeMillis()) {
+
+                            return restService
+                                    .getAllCoin()
+                                    .doOnNext(new Consumer<List<CoinResponces>>() {
+                                        @Override
+                                        public void accept(List<CoinResponces> coinResponces) throws Exception {
+                                            lastCoinUpdateTime = System.currentTimeMillis();
+                                            coinDataBase.getCoinDAO().deleteAll();
+
+                                            for (CoinResponces coinResponce : coinResponces) {
+                                                coinDataBase.getCoinDAO().insert(coinResponce);
+                                            }
+                                        }
+                                    })
+                                    .onErrorResumeNext(new Function<Throwable, Publisher<List<CoinResponces>>>() {
+                                        @Override
+                                        public Publisher<List<CoinResponces>> apply(Throwable throwable) throws Exception {
+                                            if (throwable instanceof Error) {
+                                                Error error = (Error) throwable;
+                                                Log.e("AAQQ", "apply: ТУТ 1" );
+                                                if (error.getErrorType() == ErrorType.INTERNET_IS_NOT_AVAILABLE
+                                                        && !coinResponces.isEmpty()) {
+                                                    return Flowable.just(coinResponces);
+
+                                                }
+                                            }
+                                            return Flowable.just(coinResponces);
+//                                            return Flowable.error(throwable);
+                                        }
+                                    });
+                        } else {
+                            return Flowable.just(coinResponces);
+                        }
+                    }
+                })
                 .map(new Function<List<CoinResponces>, List<Coin>>() {
                     @Override
-                    public List<Coin> apply(List<CoinResponces> testItems) throws Exception {
-
-                        coinDataBase.getCoinDAO().deleteAll();
-
+                    public List<Coin> apply(List<CoinResponces> coinResponces) throws Exception {
                         final List<Coin> list = new ArrayList<>();
-                        for (CoinResponces coin : testItems) {
+                        for (CoinResponces coin : coinResponces) {
                             list.add(new Coin(
                                     coin.getName(),
                                     coin.getSymbol(),
                                     coin.getPrice()));
-
-                            coinDataBase.getCoinDAO().insert(coin);
 
                         }
                         return list;
                     }
                 });
     }
+
+
+    @Override
+    public Flowable<List<Coin>> updateLocalBd() {
+        return coinDataBase
+                .getCoinDAO()
+                .getAll()
+                .map(new Function<List<CoinResponces>, List<Coin>>() {
+                    @Override
+                    public List<Coin> apply(List<CoinResponces> coinResponces) throws Exception {
+                        final List<Coin> list = new ArrayList<>();
+                        for (CoinResponces coin : coinResponces) {
+                            list.add(new Coin(
+                                    coin.getName(),
+                                    coin.getSymbol(),
+                                    coin.getPrice()));
+                        }
+                        return list;
+                    }
+                });
+    }
+
 
     @Override
     public Flowable<List<Coin>> getBdCoin() {

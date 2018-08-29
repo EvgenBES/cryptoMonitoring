@@ -2,6 +2,7 @@ package com.test.data.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.test.data.db.CoinDAO;
@@ -9,10 +10,10 @@ import com.test.data.db.CoinDAO;
 @Entity(tableName = CoinDAO.TABLE_NAME)
 public class CoinResponces {
 
-    @PrimaryKey(autoGenerate = true)
-    public int idCoin;
-
+    @PrimaryKey
+    @NonNull
     private String id;
+
     private String name;
     private String symbol;
     private int rank;
@@ -33,13 +34,6 @@ public class CoinResponces {
     @SerializedName("last_updated")
     private long lastUpdated;
 
-    public int getIdCoin() {
-        return idCoin;
-    }
-
-    public void setIdCoin(int idCoin) {
-        this.idCoin = idCoin;
-    }
 
     public String getId() {
         return id;
