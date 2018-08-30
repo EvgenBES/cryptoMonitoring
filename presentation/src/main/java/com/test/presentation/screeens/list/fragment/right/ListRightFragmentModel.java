@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.test.app.App;
 import com.test.domain.entity.Coin;
 import com.test.domain.usecases.AddCoinUseCase;
-import com.test.domain.usecases.GetBDCoinUseCase;
 import com.test.domain.usecases.GetListCoinUseCase;
 import com.test.presentation.base.BaseViewModel;
 import com.test.presentation.base.recycler.ClickedItemModel;
@@ -23,8 +22,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 import static android.os.SystemClock.sleep;
 
@@ -53,19 +52,25 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
     public ListRightFragmentModel() {
         getListCoinUseCase
                 .getCoins()
-                .subscribe(new Consumer<List<Coin>>() {
+                .subscribe(new SingleObserver<List<Coin>>() {
                     @Override
-                    public void accept(List<Coin> coins) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Coin> coins) {
                         adapter.setItems(coins);
-                        sleep(500);
                         coinProgress.set(View.GONE);
                     }
-                })
-                .isDisposed();
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
 
 
-
-//        getListCoinUseCase
 //                .getCoins()
 //                .subscribe(new Observer<List<Coin>>() {
 //                    @Override
@@ -92,7 +97,6 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 //                });
 
 
-            //Click item - open full info icon.
 //        adapter
 //                .observeItemClick()
 //                .subscribe(new Observer<ClickedItemModel<Coin>>() {
@@ -144,7 +148,6 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 //                });
 
 
-        //Click Button PLUS - add coin local bd
         adapter
                 .observeButtonOneClick()
                 .subscribe(new Observer<ClickedItemModel<Coin>>() {

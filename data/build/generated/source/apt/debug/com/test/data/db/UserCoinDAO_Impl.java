@@ -35,7 +35,7 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
     this.__insertionAdapterOfUserCoinResponse = new EntityInsertionAdapter<UserCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `user`(`id`,`name`,`symbol`,`price`,`quantity`) VALUES (nullif(?, 0),?,?,?,?)";
+        return "INSERT OR ABORT INTO `user`(`id`,`name`,`symbol`,`price`,`quantity`) VALUES (?,?,?,?,?)";
       }
 
       @Override
@@ -162,8 +162,8 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
           final List<UserCoinResponse> _result = new ArrayList<UserCoinResponse>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final UserCoinResponse _item;
-            final int _tmpId;
-            _tmpId = _cursor.getInt(_cursorIndexOfId);
+            final long _tmpId;
+            _tmpId = _cursor.getLong(_cursorIndexOfId);
             final String _tmpName;
             _tmpName = _cursor.getString(_cursorIndexOfName);
             final String _tmpSymbol;

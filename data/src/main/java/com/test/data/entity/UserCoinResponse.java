@@ -11,9 +11,8 @@ import com.test.domain.entity.Coin;
 @Entity(tableName = UserCoinDAO.TABLE_NAME)
 public class UserCoinResponse implements DataModel {
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
+    @PrimaryKey
+    public long id;
     private String name;
     private String symbol;
     private double price;
@@ -21,7 +20,7 @@ public class UserCoinResponse implements DataModel {
 
 
     //Constructor for Update coin local db
-    public UserCoinResponse(int id, String name, String symbol, double price, double quantity) {
+    public UserCoinResponse(long id, String name, String symbol, double price, double quantity) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
@@ -29,11 +28,11 @@ public class UserCoinResponse implements DataModel {
         this.quantity = quantity;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

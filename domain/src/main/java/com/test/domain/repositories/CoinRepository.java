@@ -13,10 +13,8 @@ import io.reactivex.Single;
 public interface CoinRepository {
 
     //GET Internet
-    Flowable<List<Coin>> getAll();
+    Single<List<Coin>> getAll();
 
-
-    Flowable<List<Coin>> updateLocalBd();
 
 
 

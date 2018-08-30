@@ -23,7 +23,7 @@ public class NotifItemViewModel extends BaseItemViewModel<Coin> {
 
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
-
+        LoadImagePicaso.loaderAvatar(view, imageUrl);
     }
 
     private int id = 0;
@@ -41,6 +41,7 @@ public class NotifItemViewModel extends BaseItemViewModel<Coin> {
         name.set(coin.getName());
         pricePosition.set("$ " + String.valueOf(coin.getPricePosition()));
         motionPrice.set(coin.getMotionPrice());
+        imageUrl.set(String.format("https://s2.coinmarketcap.com/static/img/coins/64x64/%d.png", coin.getId()));
     }
 
 

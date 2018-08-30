@@ -2,10 +2,11 @@ package com.test.presentation.screeens.list.fragment.right;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
-import android.test.com.testproject.R;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.test.domain.entity.Coin;
+import com.test.executor.LoadImagePicaso;
 import com.test.presentation.base.recycler.BaseItemViewModel;
 import com.test.presentation.base.recycler.ClickedItemModel;
 
@@ -18,16 +19,14 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
     public ObservableField<String> price = new ObservableField<>("");
     public ObservableField<String> name = new ObservableField<>("");
     public ObservableField<String> symbol = new ObservableField<>("");
-    public ObservableField<Integer> imageRes = new ObservableField<>();
+    public ObservableField<String> imageUrl = new ObservableField<>(" ");
 
     PublishSubject<ClickedItemModel<Coin>> buttonOneClickSubject;
 
 
-
-
-    @BindingAdapter({"android:src"})
-    public static void setImageViewResource(ImageView imageView, int imageRes) {
-        imageView.setImageResource(imageRes);
+    @BindingAdapter({"bind:imageUrl"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        LoadImagePicaso.loaderAvatar(view, imageUrl);
     }
 
 
@@ -35,7 +34,7 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
     private DecimalFormat formatDoubleZero = new DecimalFormat("##.00");
     private DecimalFormat formatQuadrupleZero = new DecimalFormat("#0.000");
     private Coin coin;
-    private int position = 0;
+    private long id;
 
     //этот конструктор не обязательно, это для специфических кликах
     //например когда внутри item есть две кнопки и нужно обрабатывать клики на них
@@ -46,6 +45,7 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
     @Override
     public void setItem(Coin coin, int position) {
         this.coin = coin;
+        this.id = coin.getId();
         if (coin.getPrice() > 100) {
             price.set(String.valueOf(formatDoubleZero.format(coin.getPrice())) + "$");
         } else {
@@ -53,20 +53,14 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
         }
         name.set(coin.getName());
         symbol.set(coin.getSymbol());
-
-
-
-        imageRes.set(R.drawable.btc);
+        imageUrl.set(String.format("https://s2.coinmarketcap.com/static/img/coins/64x64/%d.png", coin.getId()));
     }
 
 
     //этот метод не обязательно, это для специфических кликах
     //например когда внутри item есть две кнопки и нужно обрабатывать клики на них
     public void onMyButtonOneClicked() {
-        buttonOneClickSubject.onNext(new ClickedItemModel(coin, position));
+        buttonOneClickSubject.onNext(new ClickedItemModel(coin, (int)id));
     }
-
-
-
 
 }

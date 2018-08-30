@@ -27,7 +27,7 @@ public class LeftItemFragmentModel extends BaseItemViewModel<Coin> {
 
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
-
+        LoadImagePicaso.loaderAvatar(view, imageUrl);
     }
 
     //два вида формата для отображения цены
@@ -48,13 +48,14 @@ public class LeftItemFragmentModel extends BaseItemViewModel<Coin> {
         this.coin = coin;
         this.id = (int) coin.getId();
         name.set(coin.getName());
-        if ((coin.getPrice() * coin.getQuantity()) > 100) {
-            price.set(String.valueOf(formatDoubleZero.format(coin.getPrice() * coin.getQuantity())) + "$");
+        if (coin.getPrice() > 100) {
+            price.set(String.valueOf(formatDoubleZero.format(coin.getPrice())) + "$");
         } else {
-            price.set(String.valueOf(formatQuadrupleZero.format(coin.getPrice() * coin.getQuantity())) + "$");
+            price.set(String.valueOf(formatQuadrupleZero.format(coin.getPrice())) + "$");
         }
         symbol.set(coin.getSymbol());
         quantity.set(String.valueOf(formatQuadrupleZero.format(coin.getQuantity())));
+        imageUrl.set(String.format("https://s2.coinmarketcap.com/static/img/coins/64x64/%d.png", coin.getId()));
     }
 
 

@@ -32,11 +32,11 @@ public class CoinDataBase_Impl extends CoinDataBase {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `coins` (`id` TEXT NOT NULL, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `price` REAL NOT NULL, `marketCapUsd` INTEGER NOT NULL, `availableSupply` INTEGER NOT NULL, `totalSupply` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `lastUpdated` INTEGER NOT NULL, PRIMARY KEY(`id`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `symbol` TEXT, `price` REAL NOT NULL, `quantity` REAL NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `coins` (`idCoin` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `price` REAL NOT NULL, `marketCapUsd` INTEGER NOT NULL, `availableSupply` INTEGER NOT NULL, `totalSupply` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `lastUpdated` INTEGER NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER NOT NULL, `name` TEXT, `symbol` TEXT, `price` REAL NOT NULL, `quantity` REAL NOT NULL, PRIMARY KEY(`id`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `notif` (`idCoin` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `symbol` TEXT, `pricePosition` REAL NOT NULL, `motionPrice` INTEGER NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9c362994e98c5e11af1b8298770adcfe\")");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a27240a340ea17cc1eb05acde4f849df\")");
       }
 
       @Override
@@ -68,8 +68,9 @@ public class CoinDataBase_Impl extends CoinDataBase {
 
       @Override
       protected void validateMigration(SupportSQLiteDatabase _db) {
-        final HashMap<String, TableInfo.Column> _columnsCoins = new HashMap<String, TableInfo.Column>(12);
-        _columnsCoins.put("id", new TableInfo.Column("id", "TEXT", true, 1));
+        final HashMap<String, TableInfo.Column> _columnsCoins = new HashMap<String, TableInfo.Column>(13);
+        _columnsCoins.put("idCoin", new TableInfo.Column("idCoin", "INTEGER", true, 1));
+        _columnsCoins.put("id", new TableInfo.Column("id", "TEXT", false, 0));
         _columnsCoins.put("name", new TableInfo.Column("name", "TEXT", false, 0));
         _columnsCoins.put("symbol", new TableInfo.Column("symbol", "TEXT", false, 0));
         _columnsCoins.put("rank", new TableInfo.Column("rank", "INTEGER", true, 0));
@@ -121,7 +122,7 @@ public class CoinDataBase_Impl extends CoinDataBase {
                   + " Found:\n" + _existingNotif);
         }
       }
-    }, "9c362994e98c5e11af1b8298770adcfe", "68c14b026b3e4a6fe0b171710941ef37");
+    }, "a27240a340ea17cc1eb05acde4f849df", "830e77b2e45eb8590ca446ff6ee6f133");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

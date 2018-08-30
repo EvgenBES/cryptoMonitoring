@@ -4,9 +4,9 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.test.data.entity.CoinResponse;
-import com.test.data.entity.CoinResponces;
 import com.test.data.entity.HttpError;
 import com.test.data.entity.UserCoinResponse;
+import com.test.data.model.Currency;
 import com.test.domain.entity.Coin;
 
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -54,7 +54,7 @@ public class RestService {
         this.restApi = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("https://api.coinmarketcap.com/v1/")
+                .baseUrl("https://api.coinmarketcap.com/v2/")
 //                .baseUrl("https://api.backendless.com/7FD5B830-F360-99EB-FF4A-77DE676AB800/D4AECF17-A9CD-613E-FFAA-803DEBD1D700/")
                 .client(okHttp)
                 .build()
@@ -64,9 +64,10 @@ public class RestService {
     }
 
 
-    public Flowable<List<CoinResponces>> getAllCoin() {
+
+    public Single<Currency> getAllCoin() {
         return restApi
-                .getAllCoin();
+                .getAllCoin("USD", 50, "rank", "array");
     }
 
 //    public Observable<List<UserCoinResponse>> getCoin(String id) {

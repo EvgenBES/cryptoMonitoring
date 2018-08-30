@@ -11,19 +11,20 @@
             type="com.test.presentation.screeens.list.fragment.right.RightItemFragmentModel" />
     </data>
 
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:background="@drawable/border_radius_7dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/border_radius_7dp">
+        android:layout_marginBottom="10dp">
 
 
         <ImageView
             android:id="@+id/imageView"
             style="@style/IconItem"
-            android:src="@{viewModel.imageRes}"
+            app:imageUrl="@{viewModel.imageUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,12 +36,12 @@
             android:layout_marginTop="10dp"
             android:gravity="right"
             android:text="@{viewModel.price}"
+            tools:text="$13,434.84"
             android:textColor="@color/h1Color"
             android:textSize="@dimen/itemH2Size"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="$13,434.84" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView"
@@ -49,12 +50,12 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="@{viewModel.name}"
+            tools:text="ETHEREUM"
             android:textColor="@color/h1Color"
             android:textSize="@dimen/itemH1Size"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="ETHEREUM" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,12 +64,12 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:text='@{viewModel.symbol + " Wallet"}'
+            tools:text="ETH Wallet"
             android:textColor="@color/wallet"
             android:textSize="@dimen/symbol"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:text="ETH Wallet" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,7 +114,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
 
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

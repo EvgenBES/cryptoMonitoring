@@ -2,13 +2,13 @@ package com.test.data.net;
 
 import com.test.data.entity.CoinRequest;
 import com.test.data.entity.CoinResponse;
-import com.test.data.entity.CoinResponces;
 import com.test.data.entity.UserCoinResponse;
+import com.test.data.model.Currency;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -25,8 +25,11 @@ public interface RestApi {
 //            @Query(value = "where", encoded = true) String coinId);
 
 
-    @GET("ticker/?limit=50")
-    Flowable<List<CoinResponces>> getAllCoin();
+    @GET("ticker")
+    Single<Currency> getAllCoin(@Query("convert") String mBase,
+                                @Query("limit")Integer mLimit,
+                                @Query("sort")String mSort,
+                                @Query("structure")String mStructure);
 
     @POST("data/coin/")
     Observable<UserCoinResponse> addCoin(@Body UserCoinResponse userCoinResponse);
