@@ -5,8 +5,12 @@ import com.google.gson.reflect.TypeToken;
 import com.test.domain.entity.Error;
 import com.test.domain.entity.ErrorType;
 
+import org.reactivestreams.Publisher;
+
 import java.net.SocketTimeoutException;
 
+import io.reactivex.Flowable;
+import io.reactivex.FlowableTransformer;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
@@ -21,24 +25,24 @@ public class ErrorParserTransformer<S> {
         this.gson = gson;
     }
 
-    public <T, E extends Throwable> ObservableTransformer<T, T> parseHttpError() {
+    public <T, E extends Throwable> FlowableTransformer<T, T> parseHttpError() {
 
-        return new ObservableTransformer<T, T>() {
+        return new FlowableTransformer<T, T>() {
             @Override
-            public ObservableSource<T> apply(Observable<T> upstream) {
+            public Publisher<T> apply(Flowable<T> upstream) {
 
                 return upstream
-                        .onErrorResumeNext(new Function<Throwable, ObservableSource<T>>() {
+                        .onErrorResumeNext(new Function<Throwable, Publisher<T>>() {
                             @Override
-                            public ObservableSource<T> apply(Throwable throwable) throws Exception {
-
+                            public Publisher<T> apply(Throwable throwable) throws Exception {
                                 Error error;
                                 if (throwable instanceof HttpException) {
                                     HttpException httpException = (HttpException) throwable;
                                     //FIXME Fix NPE error
                                     String errorBody = httpException.response().errorBody().string();
                                     E httpError = gson.fromJson(errorBody,
-                                            new TypeToken<E>(){}.getType());
+                                            new TypeToken<E>() {
+                                            }.getType());
 
                                     //тут проверить параметры в HttpError и решить что делать дальше
 
@@ -52,7 +56,7 @@ public class ErrorParserTransformer<S> {
                                             ErrorType.UNEXPECTED_ERROR);
                                 }
 
-                                return Observable.error(error);
+                                return Flowable.error(error);
                             }
                         });
             }

@@ -37,6 +37,8 @@ public class Data {
     @Expose
     private Integer lastUpdated;
 
+
+
     public Integer getId() {
         return id;
     }

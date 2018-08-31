@@ -20,11 +20,10 @@ public class UserCoinResponse implements DataModel {
 
 
     //Constructor for Update coin local db
-    public UserCoinResponse(long id, String name, String symbol, double price, double quantity) {
+    public UserCoinResponse(long id, String name, String symbol, double quantity) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
-        this.price = price;
         this.quantity = quantity;
     }
 

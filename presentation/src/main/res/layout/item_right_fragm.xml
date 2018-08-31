@@ -78,7 +78,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="2dp"
             android:gravity="right"
-            android:text="price"
+            android:text='@{"rank #" + viewModel.rank}'
             android:textColor="@color/wallet"
             android:textSize="@dimen/symbol"
             app:layout_constraintBottom_toBottomOf="parent"

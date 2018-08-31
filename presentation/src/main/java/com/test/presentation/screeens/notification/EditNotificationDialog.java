@@ -37,7 +37,7 @@ public class EditNotificationDialog extends DialogFragment {
                 if (quantity.equals("")) {
                     quantity = "0";
                 }
-                ((StartViewActivity)getActivity()).loadQuantityCoin(quantity);
+                ((StartViewActivity)getActivity()).loadQuantityCoin(0.0, true); //TODO исправить
                 getDialog().dismiss();
             }
         });

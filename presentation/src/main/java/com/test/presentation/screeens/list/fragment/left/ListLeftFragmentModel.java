@@ -54,7 +54,6 @@ public class ListLeftFragmentModel extends BaseViewModel<NotifRouter, Coin> {
                     @Override
                     public void accept(List<Coin> coins) throws Exception {
                         adapter.setItems(coins);
-                        sleep(500);
                         coinProgress.set(View.GONE);
                     }
                 })

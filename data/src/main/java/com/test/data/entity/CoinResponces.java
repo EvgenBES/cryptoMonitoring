@@ -9,10 +9,10 @@ import com.test.data.db.CoinDAO;
 @Entity(tableName = CoinDAO.TABLE_NAME)
 public class CoinResponces {
 
-    @PrimaryKey(autoGenerate = true)
-    public int idCoin;
 
-    private String id;
+    @PrimaryKey
+    private long id;
+
     private String name;
     private String symbol;
     private int rank;
@@ -33,19 +33,11 @@ public class CoinResponces {
     @SerializedName("last_updated")
     private long lastUpdated;
 
-    public int getIdCoin() {
-        return idCoin;
-    }
-
-    public void setIdCoin(int idCoin) {
-        this.idCoin = idCoin;
-    }
-
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

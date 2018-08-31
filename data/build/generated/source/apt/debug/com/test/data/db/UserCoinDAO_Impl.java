@@ -147,9 +147,9 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
 
   @Override
   public Flowable<List<UserCoinResponse>> getAll() {
-    final String _sql = "SELECT * FROM user";
+    final String _sql = "SELECT * FROM user INNER JOIN coins ON user.id = coins.id";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
-    return RxRoom.createFlowable(__db, new String[]{"user"}, new Callable<List<UserCoinResponse>>() {
+    return RxRoom.createFlowable(__db, new String[]{"user","coins"}, new Callable<List<UserCoinResponse>>() {
       @Override
       public List<UserCoinResponse> call() throws Exception {
         final Cursor _cursor = __db.query(_statement);
@@ -159,6 +159,10 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
           final int _cursorIndexOfSymbol = _cursor.getColumnIndexOrThrow("symbol");
           final int _cursorIndexOfPrice = _cursor.getColumnIndexOrThrow("price");
           final int _cursorIndexOfQuantity = _cursor.getColumnIndexOrThrow("quantity");
+          final int _cursorIndexOfId_1 = _cursor.getColumnIndexOrThrow("id");
+          final int _cursorIndexOfName_1 = _cursor.getColumnIndexOrThrow("name");
+          final int _cursorIndexOfSymbol_1 = _cursor.getColumnIndexOrThrow("symbol");
+          final int _cursorIndexOfPrice_1 = _cursor.getColumnIndexOrThrow("price");
           final List<UserCoinResponse> _result = new ArrayList<UserCoinResponse>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final UserCoinResponse _item;
@@ -168,11 +172,21 @@ public class UserCoinDAO_Impl implements UserCoinDAO {
             _tmpName = _cursor.getString(_cursorIndexOfName);
             final String _tmpSymbol;
             _tmpSymbol = _cursor.getString(_cursorIndexOfSymbol);
-            final double _tmpPrice;
-            _tmpPrice = _cursor.getDouble(_cursorIndexOfPrice);
             final double _tmpQuantity;
             _tmpQuantity = _cursor.getDouble(_cursorIndexOfQuantity);
-            _item = new UserCoinResponse(_tmpId,_tmpName,_tmpSymbol,_tmpPrice,_tmpQuantity);
+            final long _tmpId_1;
+            _tmpId_1 = _cursor.getLong(_cursorIndexOfId_1);
+            final String _tmpName_1;
+            _tmpName_1 = _cursor.getString(_cursorIndexOfName_1);
+            final String _tmpSymbol_1;
+            _tmpSymbol_1 = _cursor.getString(_cursorIndexOfSymbol_1);
+            _item = new UserCoinResponse(_tmpId,_tmpName,_tmpSymbol,_tmpQuantity);
+            final double _tmpPrice;
+            _tmpPrice = _cursor.getDouble(_cursorIndexOfPrice);
+            _item.setPrice(_tmpPrice);
+            final double _tmpPrice_1;
+            _tmpPrice_1 = _cursor.getDouble(_cursorIndexOfPrice_1);
+            _item.setPrice(_tmpPrice_1);
             _result.add(_item);
           }
           return _result;

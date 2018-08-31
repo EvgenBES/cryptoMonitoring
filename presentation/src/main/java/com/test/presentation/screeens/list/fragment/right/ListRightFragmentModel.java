@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 import static android.os.SystemClock.sleep;
 
@@ -52,23 +53,36 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
     public ListRightFragmentModel() {
         getListCoinUseCase
                 .getCoins()
-                .subscribe(new SingleObserver<List<Coin>>() {
+                .subscribe(new Consumer<List<Coin>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(List<Coin> coins) {
+                    public void accept(List<Coin> coins) throws Exception {
                         adapter.setItems(coins);
                         coinProgress.set(View.GONE);
                     }
+                })
+                .isDisposed();
 
-                    @Override
-                    public void onError(Throwable e) {
 
-                    }
-                });
+
+
+
+//                .subscribe(new SingleObserver<List<Coin>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(List<Coin> coins) {
+//                        adapter.setItems(coins);
+//                        coinProgress.set(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//                });
 
 
 //                .getCoins()

@@ -35,83 +35,73 @@ public class CoinDAO_Impl implements CoinDAO {
     this.__insertionAdapterOfCoinResponces = new EntityInsertionAdapter<CoinResponces>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `coins`(`idCoin`,`id`,`name`,`symbol`,`rank`,`price`,`marketCapUsd`,`availableSupply`,`totalSupply`,`percentChange1h`,`percentChange24h`,`percentChange7d`,`lastUpdated`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `coins`(`id`,`name`,`symbol`,`rank`,`price`,`marketCapUsd`,`availableSupply`,`totalSupply`,`percentChange1h`,`percentChange24h`,`percentChange7d`,`lastUpdated`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, CoinResponces value) {
-        stmt.bindLong(1, value.idCoin);
-        if (value.getId() == null) {
+        stmt.bindLong(1, value.getId());
+        if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
-          stmt.bindString(2, value.getId());
-        }
-        if (value.getName() == null) {
-          stmt.bindNull(3);
-        } else {
-          stmt.bindString(3, value.getName());
+          stmt.bindString(2, value.getName());
         }
         if (value.getSymbol() == null) {
-          stmt.bindNull(4);
+          stmt.bindNull(3);
         } else {
-          stmt.bindString(4, value.getSymbol());
+          stmt.bindString(3, value.getSymbol());
         }
-        stmt.bindLong(5, value.getRank());
-        stmt.bindDouble(6, value.getPrice());
-        stmt.bindLong(7, value.getMarketCapUsd());
-        stmt.bindLong(8, value.getAvailableSupply());
-        stmt.bindLong(9, value.getTotalSupply());
-        stmt.bindDouble(10, value.getPercentChange1h());
-        stmt.bindDouble(11, value.getPercentChange24h());
-        stmt.bindDouble(12, value.getPercentChange7d());
-        stmt.bindLong(13, value.getLastUpdated());
+        stmt.bindLong(4, value.getRank());
+        stmt.bindDouble(5, value.getPrice());
+        stmt.bindLong(6, value.getMarketCapUsd());
+        stmt.bindLong(7, value.getAvailableSupply());
+        stmt.bindLong(8, value.getTotalSupply());
+        stmt.bindDouble(9, value.getPercentChange1h());
+        stmt.bindDouble(10, value.getPercentChange24h());
+        stmt.bindDouble(11, value.getPercentChange7d());
+        stmt.bindLong(12, value.getLastUpdated());
       }
     };
     this.__deletionAdapterOfCoinResponces = new EntityDeletionOrUpdateAdapter<CoinResponces>(__db) {
       @Override
       public String createQuery() {
-        return "DELETE FROM `coins` WHERE `idCoin` = ?";
+        return "DELETE FROM `coins` WHERE `id` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, CoinResponces value) {
-        stmt.bindLong(1, value.idCoin);
+        stmt.bindLong(1, value.getId());
       }
     };
     this.__updateAdapterOfCoinResponces = new EntityDeletionOrUpdateAdapter<CoinResponces>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `coins` SET `idCoin` = ?,`id` = ?,`name` = ?,`symbol` = ?,`rank` = ?,`price` = ?,`marketCapUsd` = ?,`availableSupply` = ?,`totalSupply` = ?,`percentChange1h` = ?,`percentChange24h` = ?,`percentChange7d` = ?,`lastUpdated` = ? WHERE `idCoin` = ?";
+        return "UPDATE OR ABORT `coins` SET `id` = ?,`name` = ?,`symbol` = ?,`rank` = ?,`price` = ?,`marketCapUsd` = ?,`availableSupply` = ?,`totalSupply` = ?,`percentChange1h` = ?,`percentChange24h` = ?,`percentChange7d` = ?,`lastUpdated` = ? WHERE `id` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, CoinResponces value) {
-        stmt.bindLong(1, value.idCoin);
-        if (value.getId() == null) {
+        stmt.bindLong(1, value.getId());
+        if (value.getName() == null) {
           stmt.bindNull(2);
         } else {
-          stmt.bindString(2, value.getId());
-        }
-        if (value.getName() == null) {
-          stmt.bindNull(3);
-        } else {
-          stmt.bindString(3, value.getName());
+          stmt.bindString(2, value.getName());
         }
         if (value.getSymbol() == null) {
-          stmt.bindNull(4);
+          stmt.bindNull(3);
         } else {
-          stmt.bindString(4, value.getSymbol());
+          stmt.bindString(3, value.getSymbol());
         }
-        stmt.bindLong(5, value.getRank());
-        stmt.bindDouble(6, value.getPrice());
-        stmt.bindLong(7, value.getMarketCapUsd());
-        stmt.bindLong(8, value.getAvailableSupply());
-        stmt.bindLong(9, value.getTotalSupply());
-        stmt.bindDouble(10, value.getPercentChange1h());
-        stmt.bindDouble(11, value.getPercentChange24h());
-        stmt.bindDouble(12, value.getPercentChange7d());
-        stmt.bindLong(13, value.getLastUpdated());
-        stmt.bindLong(14, value.idCoin);
+        stmt.bindLong(4, value.getRank());
+        stmt.bindDouble(5, value.getPrice());
+        stmt.bindLong(6, value.getMarketCapUsd());
+        stmt.bindLong(7, value.getAvailableSupply());
+        stmt.bindLong(8, value.getTotalSupply());
+        stmt.bindDouble(9, value.getPercentChange1h());
+        stmt.bindDouble(10, value.getPercentChange24h());
+        stmt.bindDouble(11, value.getPercentChange7d());
+        stmt.bindLong(12, value.getLastUpdated());
+        stmt.bindLong(13, value.getId());
       }
     };
     this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
@@ -178,7 +168,6 @@ public class CoinDAO_Impl implements CoinDAO {
       public List<CoinResponces> call() throws Exception {
         final Cursor _cursor = __db.query(_statement);
         try {
-          final int _cursorIndexOfIdCoin = _cursor.getColumnIndexOrThrow("idCoin");
           final int _cursorIndexOfId = _cursor.getColumnIndexOrThrow("id");
           final int _cursorIndexOfName = _cursor.getColumnIndexOrThrow("name");
           final int _cursorIndexOfSymbol = _cursor.getColumnIndexOrThrow("symbol");
@@ -195,9 +184,8 @@ public class CoinDAO_Impl implements CoinDAO {
           while(_cursor.moveToNext()) {
             final CoinResponces _item;
             _item = new CoinResponces();
-            _item.idCoin = _cursor.getInt(_cursorIndexOfIdCoin);
-            final String _tmpId;
-            _tmpId = _cursor.getString(_cursorIndexOfId);
+            final long _tmpId;
+            _tmpId = _cursor.getLong(_cursorIndexOfId);
             _item.setId(_tmpId);
             final String _tmpName;
             _tmpName = _cursor.getString(_cursorIndexOfName);

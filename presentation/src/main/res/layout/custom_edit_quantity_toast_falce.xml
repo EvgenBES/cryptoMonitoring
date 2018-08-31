@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/custom_toast_layout"
-    android:background="@drawable/border_radius_toast_7dp_green"
+    android:background="@drawable/border_radius_toast_7dp_red"
     android:orientation="horizontal"
     android:padding="10dp">
 
@@ -11,7 +11,7 @@
         android:id="@+id/custom_toast_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_check_circle" />
+        android:src="@drawable/ic_exclamation_circle_24dp" />
 
     <TextView
         android:id="@+id/custom_toast_message"
@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:text="@string/edit_quantity"
+        android:text="@string/edit_quantity_error"
         android:textColor="#fff" />
 </LinearLayout>

@@ -89,21 +89,33 @@ public class StartViewActivity extends BaseMvvmActivity<StartViewModel, StartAct
     public void startDialog(Coin entity) {
         coin = entity;
         QuantityDialog dialog = new QuantityDialog();
+        Bundle bundle=new Bundle();
+        bundle.putDouble("massage", coin.getQuantity());
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "QuantityDialog");
     }
 
-    public void loadQuantityCoin(String quantity) {
-        showEditQuantityToast();
-        coin.setQuantity(Double.valueOf(quantity));
+    public void loadQuantityCoin(double quantity, boolean result) {
+        showEditQuantityToast(result);
+        coin.setQuantity(quantity);
         router.loadQuantityCoins(coin);
     }
 
 
+    public void showEditQuantityToast(boolean result) {
+        if (result) {
+            LayoutInflater inflater = router.getActivity().getLayoutInflater();
+            View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
+            getTost(toastLayout);
 
-    public void showEditQuantityToast() {
-        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-        View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
+        } else {
+            LayoutInflater inflater = router.getActivity().getLayoutInflater();
+            View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast_falce, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
+            getTost(toastLayout);
+        }
+    }
 
+    private void getTost(View toastLayout) {
         Toast toast = new Toast(App.getContext());
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);

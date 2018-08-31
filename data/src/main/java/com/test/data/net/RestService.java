@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.OkHttpClient;
@@ -65,9 +66,10 @@ public class RestService {
 
 
 
-    public Single<Currency> getAllCoin() {
+    public Flowable<Currency> getAllCoin() {
         return restApi
-                .getAllCoin("USD", 50, "rank", "array");
+                .getAllCoin("USD", 50, "rank", "array")
+                .compose(errorParserTransformer.<Currency, HttpError>parseHttpError());
     }
 
 //    public Observable<List<UserCoinResponse>> getCoin(String id) {
@@ -76,9 +78,9 @@ public class RestService {
 //                .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
 //    }
 
-    public Observable<List<CoinResponse>> addCoin(UserCoinResponse userCoinResponse) {
-        return restApi
-                .addCoin(userCoinResponse)
-                .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
-    }
+//    public Observable<List<CoinResponse>> addCoin(UserCoinResponse userCoinResponse) {
+//        return restApi
+//                .addCoin(userCoinResponse)
+//                .compose(errorParserTransformer.<List<CoinResponse>, HttpError>parseHttpError());
+//    }
 }

@@ -19,6 +19,7 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
     public ObservableField<String> price = new ObservableField<>("");
     public ObservableField<String> name = new ObservableField<>("");
     public ObservableField<String> symbol = new ObservableField<>("");
+    public ObservableField<String> rank = new ObservableField<>("");
     public ObservableField<String> imageUrl = new ObservableField<>(" ");
 
     PublishSubject<ClickedItemModel<Coin>> buttonOneClickSubject;
@@ -37,7 +38,7 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
     private long id;
 
     //этот конструктор не обязательно, это для специфических кликах
-    //например когда внутри item есть две кнопки и нужно обрабатывать клики на них
+    //например когда внутри item есть кнопки и нужно обрабатывать клики на них
     public RightItemFragmentModel(PublishSubject<ClickedItemModel<Coin>> buttonOneClickSubject) {
         this.buttonOneClickSubject = buttonOneClickSubject;
     }
@@ -53,12 +54,13 @@ public class RightItemFragmentModel extends BaseItemViewModel<Coin> {
         }
         name.set(coin.getName());
         symbol.set(coin.getSymbol());
+        rank.set(String.valueOf(coin.getRank()));
         imageUrl.set(String.format("https://s2.coinmarketcap.com/static/img/coins/64x64/%d.png", coin.getId()));
     }
 
 
     //этот метод не обязательно, это для специфических кликах
-    //например когда внутри item есть две кнопки и нужно обрабатывать клики на них
+    //например когда внутри item есть кнопки и нужно обрабатывать клики на них
     public void onMyButtonOneClicked() {
         buttonOneClickSubject.onNext(new ClickedItemModel(coin, (int)id));
     }

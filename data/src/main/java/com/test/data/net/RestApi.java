@@ -7,8 +7,8 @@ import com.test.data.model.Currency;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -26,10 +26,10 @@ public interface RestApi {
 
 
     @GET("ticker")
-    Single<Currency> getAllCoin(@Query("convert") String mBase,
-                                @Query("limit")Integer mLimit,
-                                @Query("sort")String mSort,
-                                @Query("structure")String mStructure);
+    Flowable<Currency> getAllCoin(@Query("convert") String mBase,
+                                  @Query("limit")Integer mLimit,
+                                  @Query("sort")String mSort,
+                                  @Query("structure")String mStructure);
 
     @POST("data/coin/")
     Observable<UserCoinResponse> addCoin(@Body UserCoinResponse userCoinResponse);
