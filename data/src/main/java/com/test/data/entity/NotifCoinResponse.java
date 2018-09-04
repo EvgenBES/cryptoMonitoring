@@ -12,28 +12,36 @@ public class NotifCoinResponse implements DataModel {
 
 
     @PrimaryKey(autoGenerate = true)
-    private int idCoin;
+    private int idNotif;
 
+    private long id;
     private String name;
-    private String symbol;
     private double pricePosition;
     private boolean motionPrice;
 
 
-    public NotifCoinResponse(int idCoin, String name, String symbol, double pricePosition, boolean motionPrice) {
-        this.idCoin = idCoin;
+    public NotifCoinResponse(int idNotif, long id, String name, double pricePosition, boolean motionPrice) {
+        this.idNotif = idNotif;
+        this.id = id;
         this.name = name;
-        this.symbol = symbol;
         this.pricePosition = pricePosition;
         this.motionPrice = motionPrice;
     }
 
-    public int getIdCoin() {
-        return idCoin;
+    public long getId() {
+        return id;
     }
 
-    public void setIdCoin(int idCoin) {
-        this.idCoin = idCoin;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getIdNotif() {
+        return idNotif;
+    }
+
+    public void setIdNotif(int idNotif) {
+        this.idNotif = idNotif;
     }
 
     public String getName() {
@@ -42,14 +50,6 @@ public class NotifCoinResponse implements DataModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
     }
 
     public double getPricePosition() {

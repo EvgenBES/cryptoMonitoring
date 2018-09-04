@@ -216,11 +216,34 @@ public class CoinRepositoryImpl implements CoinRepository {
                         final List<Coin> list = new ArrayList<>();
                         for (NotifCoinResponse coin : notifCoinResponses) {
                             list.add(new Coin(
-                                    coin.getIdCoin(),
+                                    coin.getIdNotif(),
+                                    coin.getId(),
                                     coin.getName(),
-                                    coin.getSymbol(),
                                     coin.getPricePosition(),
                                     coin.getMotionPrice()
+                            ));
+                        }
+                        return list;
+                    }
+                });
+    }
+
+    @Override
+    public Flowable<List<Coin>> search(String coinName) {
+        return coinDataBase
+                .getCoinDAO()
+                .searchName(coinName)
+                .map(new Function<List<CoinResponces>, List<Coin>>() {
+                    @Override
+                    public List<Coin> apply(List<CoinResponces> coinResponces) throws Exception {
+                        final List<Coin> list = new ArrayList<>();
+
+                        for (CoinResponces coin : coinResponces) {
+                            list.add(new Coin(
+                                    coin.getId(),
+                                    coin.getName(),
+                                    coin.getPrice(),
+                                    0
                             ));
                         }
                         return list;
@@ -266,9 +289,9 @@ public class CoinRepositoryImpl implements CoinRepository {
     @Override
     public void addNotif(Coin coin) {
         NotifCoinResponse addNotifCoin = new NotifCoinResponse(
-                (int) coin.getId(),
+                0,
+                coin.getId(),
                 coin.getName(),
-                coin.getSymbol(),
                 coin.getPricePosition(),
                 coin.getMotionPrice()
         );
@@ -298,26 +321,6 @@ public class CoinRepositoryImpl implements CoinRepository {
                 });
     }
 
-
-//    @Override
-//    public Observable<Coin> getOneUser(String id) {
-//        return restService
-//                .getCoin(id)
-//                .map(new Function<List<UserCoinResponse>, Coin>() {
-//                    @Override
-//                    public Coin apply(List<UserCoinResponse> userCoinResponses) throws Exception {
-//                        for (UserCoinResponse userCoinRespons : userCoinResponses) {
-//                            coinDataBase.getUserDAO().insert(userCoinRespons);
-//                        }
-//                        return null;
-//                    }
-//                });
-//    }
-
-    @Override
-    public Completable delete(String id) {
-        return null;
-    }
 
     @Override
     public void deleteNotif(long coinId) {

@@ -34,7 +34,7 @@
 
         </LinearLayout>
 
-        <EditText
+        <android.support.v7.widget.AppCompatAutoCompleteTextView
             android:id="@+id/searchCoin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -22,7 +22,7 @@ public interface NotifCoinDAO {
     @Update
     void update(NotifCoinResponse notifCoinResponse);
 
-    @Query("DELETE FROM notif WHERE idCoin = :coinId")
+    @Query("DELETE FROM notif WHERE idNotif = :coinId")
     void delete(long coinId);
 
     @Query("DELETE FROM " + TABLE_NAME)

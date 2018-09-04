@@ -35,21 +35,17 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
     this.__insertionAdapterOfNotifCoinResponse = new EntityInsertionAdapter<NotifCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `notif`(`idCoin`,`name`,`symbol`,`pricePosition`,`motionPrice`) VALUES (nullif(?, 0),?,?,?,?)";
+        return "INSERT OR ABORT INTO `notif`(`idNotif`,`id`,`name`,`pricePosition`,`motionPrice`) VALUES (nullif(?, 0),?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, NotifCoinResponse value) {
-        stmt.bindLong(1, value.getIdCoin());
+        stmt.bindLong(1, value.getIdNotif());
+        stmt.bindLong(2, value.getId());
         if (value.getName() == null) {
-          stmt.bindNull(2);
-        } else {
-          stmt.bindString(2, value.getName());
-        }
-        if (value.getSymbol() == null) {
           stmt.bindNull(3);
         } else {
-          stmt.bindString(3, value.getSymbol());
+          stmt.bindString(3, value.getName());
         }
         stmt.bindDouble(4, value.getPricePosition());
         final int _tmp;
@@ -60,33 +56,29 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
     this.__updateAdapterOfNotifCoinResponse = new EntityDeletionOrUpdateAdapter<NotifCoinResponse>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `notif` SET `idCoin` = ?,`name` = ?,`symbol` = ?,`pricePosition` = ?,`motionPrice` = ? WHERE `idCoin` = ?";
+        return "UPDATE OR ABORT `notif` SET `idNotif` = ?,`id` = ?,`name` = ?,`pricePosition` = ?,`motionPrice` = ? WHERE `idNotif` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, NotifCoinResponse value) {
-        stmt.bindLong(1, value.getIdCoin());
+        stmt.bindLong(1, value.getIdNotif());
+        stmt.bindLong(2, value.getId());
         if (value.getName() == null) {
-          stmt.bindNull(2);
-        } else {
-          stmt.bindString(2, value.getName());
-        }
-        if (value.getSymbol() == null) {
           stmt.bindNull(3);
         } else {
-          stmt.bindString(3, value.getSymbol());
+          stmt.bindString(3, value.getName());
         }
         stmt.bindDouble(4, value.getPricePosition());
         final int _tmp;
         _tmp = value.getMotionPrice() ? 1 : 0;
         stmt.bindLong(5, _tmp);
-        stmt.bindLong(6, value.getIdCoin());
+        stmt.bindLong(6, value.getIdNotif());
       }
     };
     this.__preparedStmtOfDelete = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
-        final String _query = "DELETE FROM notif WHERE idCoin = ?";
+        final String _query = "DELETE FROM notif WHERE idNotif = ?";
         return _query;
       }
     };
@@ -158,27 +150,27 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
       public List<NotifCoinResponse> call() throws Exception {
         final Cursor _cursor = __db.query(_statement);
         try {
-          final int _cursorIndexOfIdCoin = _cursor.getColumnIndexOrThrow("idCoin");
+          final int _cursorIndexOfIdNotif = _cursor.getColumnIndexOrThrow("idNotif");
+          final int _cursorIndexOfId = _cursor.getColumnIndexOrThrow("id");
           final int _cursorIndexOfName = _cursor.getColumnIndexOrThrow("name");
-          final int _cursorIndexOfSymbol = _cursor.getColumnIndexOrThrow("symbol");
           final int _cursorIndexOfPricePosition = _cursor.getColumnIndexOrThrow("pricePosition");
           final int _cursorIndexOfMotionPrice = _cursor.getColumnIndexOrThrow("motionPrice");
           final List<NotifCoinResponse> _result = new ArrayList<NotifCoinResponse>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final NotifCoinResponse _item;
-            final int _tmpIdCoin;
-            _tmpIdCoin = _cursor.getInt(_cursorIndexOfIdCoin);
+            final int _tmpIdNotif;
+            _tmpIdNotif = _cursor.getInt(_cursorIndexOfIdNotif);
+            final long _tmpId;
+            _tmpId = _cursor.getLong(_cursorIndexOfId);
             final String _tmpName;
             _tmpName = _cursor.getString(_cursorIndexOfName);
-            final String _tmpSymbol;
-            _tmpSymbol = _cursor.getString(_cursorIndexOfSymbol);
             final double _tmpPricePosition;
             _tmpPricePosition = _cursor.getDouble(_cursorIndexOfPricePosition);
             final boolean _tmpMotionPrice;
             final int _tmp;
             _tmp = _cursor.getInt(_cursorIndexOfMotionPrice);
             _tmpMotionPrice = _tmp != 0;
-            _item = new NotifCoinResponse(_tmpIdCoin,_tmpName,_tmpSymbol,_tmpPricePosition,_tmpMotionPrice);
+            _item = new NotifCoinResponse(_tmpIdNotif,_tmpId,_tmpName,_tmpPricePosition,_tmpMotionPrice);
             _result.add(_item);
           }
           return _result;

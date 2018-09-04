@@ -16,7 +16,10 @@ import com.test.domain.entity.Coin;
 import com.test.presentation.base.BaseMvvmActivity;
 import com.test.presentation.screeens.main.QuantityDialog;
 
-public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, ActivityNotifViewBinding, NotifRouter>{
+import java.util.ArrayList;
+import java.util.List;
+
+public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, ActivityNotifViewBinding, NotifRouter> {
 
 
     @Override
@@ -82,8 +85,11 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
         router.getActivity().finish();
     }
 
-    public void addNotifDialog() {
+    public void addNotifDialog(ArrayList<String> listSearchCoin) {
         AddNotificationDialog dialog = new AddNotificationDialog();
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("listSearchCoin", listSearchCoin);
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "AddNotificationDialog");
     }
 
@@ -92,7 +98,7 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
         dialog.show(getSupportFragmentManager(), "EditNotificationDialog");
     }
 
-    public void addNotificationBd(Coin coin) {
-        router.addNotif(coin);
+    public void addNotificationBd(String coinName, double priceCoin, boolean motion, boolean result) {
+        router.addNotif(coinName, priceCoin, motion, result);
     }
 }

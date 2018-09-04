@@ -32,6 +32,8 @@ public interface CoinRepository {
     //GET Local BD NotifUser
     Flowable<List<Coin>> getAllNotif();
 
+    Flowable<List<Coin>> search(String coinName);
+
     void addNotif(Coin coin);
 
     void deleteNotif(long coinId);
@@ -45,8 +47,6 @@ public interface CoinRepository {
 
 
 //    Observable<Coin> getOneUser(String id);
-
-    Completable delete(String id);
 
     Observable<List<Coin>> search(Search search);
 }

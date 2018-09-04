@@ -17,7 +17,7 @@ public class QuantityDialog extends DialogFragment {
     private EditText editQuantity;
     private TextView actionAdd;
     private TextView actionBack;
-    double dQuantity;
+    private double dQuantity;
 
     @Nullable
     @Override

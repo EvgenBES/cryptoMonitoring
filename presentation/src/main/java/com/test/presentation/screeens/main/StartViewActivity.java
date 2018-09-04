@@ -89,7 +89,7 @@ public class StartViewActivity extends BaseMvvmActivity<StartViewModel, StartAct
     public void startDialog(Coin entity) {
         coin = entity;
         QuantityDialog dialog = new QuantityDialog();
-        Bundle bundle=new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putDouble("massage", coin.getQuantity());
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "QuantityDialog");

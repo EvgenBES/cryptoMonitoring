@@ -3,7 +3,6 @@ package com.test.presentation.screeens.notification;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.test.com.testproject.R;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,14 @@ import com.test.app.App;
 import com.test.domain.entity.Coin;
 import com.test.domain.usecases.AddNotifUseCase;
 import com.test.domain.usecases.DeleteNotifUseCase;
+import com.test.domain.usecases.GetListCoinUseCase;
 import com.test.domain.usecases.GetNotifListUseCase;
+import com.test.domain.usecases.SearchCoinLocalUseCase;
 import com.test.presentation.base.BaseViewModel;
 import com.test.presentation.base.recycler.ClickedItemModel;
 import com.test.presentation.base.recycler.NotifItemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -34,7 +36,8 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
     Random random = new Random();
 
-    private Coin addNotifCoin;
+
+    private ArrayList<String> listCoin = new ArrayList<>();
 
     @Inject
     public GetNotifListUseCase notifListUseCase;
@@ -44,6 +47,12 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
     @Inject
     public DeleteNotifUseCase deleteNotifUseCase;
+
+    @Inject
+    public GetListCoinUseCase listCoinUseCase;
+
+    @Inject
+    public SearchCoinLocalUseCase searchCoin;
 
 
     @Override
@@ -80,7 +89,7 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
                     @Override
                     public void onNext(ClickedItemModel clickedItemModel) {
-                      router.editDialog();
+                        router.editDialog();
                     }
 
                     @Override
@@ -93,6 +102,20 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
                     }
                 });
+
+
+        listCoinUseCase
+                .getCoins()
+                .subscribe(new Consumer<List<Coin>>() {
+                    @Override
+                    public void accept(List<Coin> coins) throws Exception {
+                        for (Coin coin : coins) {
+                            listCoin.add(coin.getName());
+                        }
+                    }
+                })
+                .isDisposed();
+
     }
 
     /**
@@ -116,13 +139,12 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 //                        Coin(long id, String name, String symbol, String image, int motion, double position)
 
 
-                        //TODO переделать под изменение одного поля базы
-                        addNotifUseCase.addNotif(new Coin(
-                                editCoinId,
-                                "Magarita",
-                                "MGT",
-                                random.nextInt(999),
-                                random.nextBoolean()));
+//                        //TODO переделать под изменение одного поля базы
+//                        addNotifUseCase.addNotif(new Coin(
+//                                editCoinId,
+//                                "Magarita",
+//                                random.nextInt(999),
+//                                random.nextBoolean()));
 
                     }
                 })
@@ -142,7 +164,7 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
 
     public void onClickAddNotif() {
-       router.addDialog();
+        router.addDialog(listCoin);
     }
 
 
@@ -173,7 +195,15 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
         toast.show();
     }
 
-    public void addNotifBd(Coin coin) {
-        addNotifUseCase.addNotif(coin);
+    public void addNotifBd(final String coinName, final double priceCoin, final boolean motion, boolean result) {
+        searchCoin
+                .searchCoin(coinName)
+                .subscribe(new Consumer<List<Coin>>() {
+                    @Override
+                    public void accept(List<Coin> coins) throws Exception {
+                        addNotifUseCase.addNotif(new Coin(0, coins.get(coins.size() - 1).getId(), coinName, priceCoin, motion));
+                    }
+                })
+                .isDisposed();
     }
 }

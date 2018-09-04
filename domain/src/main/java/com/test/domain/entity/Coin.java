@@ -16,6 +16,7 @@ public class Coin implements DomainModel{
     private double quantity;
     private boolean motionPrice;
     private double pricePosition;
+    private int idNotif;
 
 
     //Constructor get all coin local bd
@@ -47,10 +48,10 @@ public class Coin implements DomainModel{
     }
 
     //Constructor Add Notification Coin
-    public Coin(long id, String name, String symbol, double pricePosition, boolean motionPrice) {
+    public Coin(int idNotif, long id, String name, double pricePosition, boolean motionPrice) {
+        this.idNotif = idNotif;
         this.id = id;
         this.name = name;
-        this.symbol = symbol;
         this.pricePosition = pricePosition;
         this.motionPrice = motionPrice;
     }
@@ -69,6 +70,14 @@ public class Coin implements DomainModel{
         this.id = id;
     }
 
+
+    public int getIdNotif() {
+        return idNotif;
+    }
+
+    public void setIdNotif(int idNotif) {
+        this.idNotif = idNotif;
+    }
 
     public long getId() {
         return id;

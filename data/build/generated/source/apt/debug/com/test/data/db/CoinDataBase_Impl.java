@@ -34,9 +34,9 @@ public class CoinDataBase_Impl extends CoinDataBase {
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `coins` (`id` INTEGER NOT NULL, `name` TEXT, `symbol` TEXT, `rank` INTEGER NOT NULL, `price` REAL NOT NULL, `marketCapUsd` INTEGER NOT NULL, `availableSupply` INTEGER NOT NULL, `totalSupply` INTEGER NOT NULL, `percentChange1h` REAL NOT NULL, `percentChange24h` REAL NOT NULL, `percentChange7d` REAL NOT NULL, `lastUpdated` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER NOT NULL, `name` TEXT, `symbol` TEXT, `price` REAL NOT NULL, `quantity` REAL NOT NULL, PRIMARY KEY(`id`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `notif` (`idCoin` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `symbol` TEXT, `pricePosition` REAL NOT NULL, `motionPrice` INTEGER NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `notif` (`idNotif` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT, `pricePosition` REAL NOT NULL, `motionPrice` INTEGER NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"11ad3e62a50ff5d51e1dd12a9b51ed21\")");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"033cf521fe4b696fcd33750fc44ed4fb\")");
       }
 
       @Override
@@ -106,9 +106,9 @@ public class CoinDataBase_Impl extends CoinDataBase {
                   + " Found:\n" + _existingUser);
         }
         final HashMap<String, TableInfo.Column> _columnsNotif = new HashMap<String, TableInfo.Column>(5);
-        _columnsNotif.put("idCoin", new TableInfo.Column("idCoin", "INTEGER", true, 1));
+        _columnsNotif.put("idNotif", new TableInfo.Column("idNotif", "INTEGER", true, 1));
+        _columnsNotif.put("id", new TableInfo.Column("id", "INTEGER", true, 0));
         _columnsNotif.put("name", new TableInfo.Column("name", "TEXT", false, 0));
-        _columnsNotif.put("symbol", new TableInfo.Column("symbol", "TEXT", false, 0));
         _columnsNotif.put("pricePosition", new TableInfo.Column("pricePosition", "REAL", true, 0));
         _columnsNotif.put("motionPrice", new TableInfo.Column("motionPrice", "INTEGER", true, 0));
         final HashSet<TableInfo.ForeignKey> _foreignKeysNotif = new HashSet<TableInfo.ForeignKey>(0);
@@ -121,7 +121,7 @@ public class CoinDataBase_Impl extends CoinDataBase {
                   + " Found:\n" + _existingNotif);
         }
       }
-    }, "11ad3e62a50ff5d51e1dd12a9b51ed21", "7ab9fb8300f6ead18db3705c22b02e72");
+    }, "033cf521fe4b696fcd33750fc44ed4fb", "27ca261d768134ca883842968843e1a6");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
