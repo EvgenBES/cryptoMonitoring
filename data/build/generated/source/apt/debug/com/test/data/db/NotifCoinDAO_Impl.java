@@ -1,7 +1,6 @@
 package com.test.data.db;
 
 import android.arch.persistence.db.SupportSQLiteStatement;
-import android.arch.persistence.room.EntityDeletionOrUpdateAdapter;
 import android.arch.persistence.room.EntityInsertionAdapter;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.RoomSQLiteQuery;
@@ -24,7 +23,7 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
 
   private final EntityInsertionAdapter __insertionAdapterOfNotifCoinResponse;
 
-  private final EntityDeletionOrUpdateAdapter __updateAdapterOfNotifCoinResponse;
+  private final SharedSQLiteStatement __preparedStmtOfEditNitif;
 
   private final SharedSQLiteStatement __preparedStmtOfDelete;
 
@@ -53,26 +52,11 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
         stmt.bindLong(5, _tmp);
       }
     };
-    this.__updateAdapterOfNotifCoinResponse = new EntityDeletionOrUpdateAdapter<NotifCoinResponse>(__db) {
+    this.__preparedStmtOfEditNitif = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `notif` SET `idNotif` = ?,`id` = ?,`name` = ?,`pricePosition` = ?,`motionPrice` = ? WHERE `idNotif` = ?";
-      }
-
-      @Override
-      public void bind(SupportSQLiteStatement stmt, NotifCoinResponse value) {
-        stmt.bindLong(1, value.getIdNotif());
-        stmt.bindLong(2, value.getId());
-        if (value.getName() == null) {
-          stmt.bindNull(3);
-        } else {
-          stmt.bindString(3, value.getName());
-        }
-        stmt.bindDouble(4, value.getPricePosition());
-        final int _tmp;
-        _tmp = value.getMotionPrice() ? 1 : 0;
-        stmt.bindLong(5, _tmp);
-        stmt.bindLong(6, value.getIdNotif());
+        final String _query = "UPDATE notif SET pricePosition = ?, motionPrice = ? WHERE idNotif = ?";
+        return _query;
       }
     };
     this.__preparedStmtOfDelete = new SharedSQLiteStatement(__db) {
@@ -103,13 +87,23 @@ public class NotifCoinDAO_Impl implements NotifCoinDAO {
   }
 
   @Override
-  public void update(NotifCoinResponse notifCoinResponse) {
+  public void editNitif(int idNotif, double price, boolean motionPrice) {
+    final SupportSQLiteStatement _stmt = __preparedStmtOfEditNitif.acquire();
     __db.beginTransaction();
     try {
-      __updateAdapterOfNotifCoinResponse.handle(notifCoinResponse);
+      int _argIndex = 1;
+      _stmt.bindDouble(_argIndex, price);
+      _argIndex = 2;
+      final int _tmp;
+      _tmp = motionPrice ? 1 : 0;
+      _stmt.bindLong(_argIndex, _tmp);
+      _argIndex = 3;
+      _stmt.bindLong(_argIndex, idNotif);
+      _stmt.executeUpdateDelete();
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+      __preparedStmtOfEditNitif.release(_stmt);
     }
   }
 

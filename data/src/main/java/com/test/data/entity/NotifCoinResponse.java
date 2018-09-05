@@ -1,6 +1,7 @@
 package com.test.data.entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -13,6 +14,7 @@ public class NotifCoinResponse implements DataModel {
 
     @PrimaryKey(autoGenerate = true)
     private int idNotif;
+
 
     private long id;
     private String name;
@@ -27,6 +29,7 @@ public class NotifCoinResponse implements DataModel {
         this.pricePosition = pricePosition;
         this.motionPrice = motionPrice;
     }
+
 
     public long getId() {
         return id;

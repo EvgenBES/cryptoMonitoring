@@ -16,8 +16,6 @@ public interface CoinRepository {
     Flowable<List<Coin>> getAll();
 
 
-
-
     //GET Local BD UserCoin
     Flowable<List<Coin>> getBdCoin();
 
@@ -28,7 +26,6 @@ public interface CoinRepository {
     void deleteUserCoin(long coinId);
 
 
-
     //GET Local BD NotifUser
     Flowable<List<Coin>> getAllNotif();
 
@@ -36,17 +33,7 @@ public interface CoinRepository {
 
     void addNotif(Coin coin);
 
+    void editNotif(int idNotif, double price, boolean motionPrice);
+
     void deleteNotif(long coinId);
-
-
-
-
-
-
-
-
-
-//    Observable<Coin> getOneUser(String id);
-
-    Observable<List<Coin>> search(Search search);
 }

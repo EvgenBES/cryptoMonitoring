@@ -321,6 +321,33 @@ public class CoinRepositoryImpl implements CoinRepository {
                 });
     }
 
+    @Override
+    public void editNotif(int idNotif, double price, boolean motionPrice) {
+        Observable.just(coinDataBase)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<CoinDataBase>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(CoinDataBase coinDataBase) {
+                        coinDataBase.getNotifDAO().editNitif(idNotif, price, motionPrice);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 
     @Override
     public void deleteNotif(long coinId) {
@@ -374,12 +401,6 @@ public class CoinRepositoryImpl implements CoinRepository {
 
                     }
                 });
-    }
-
-
-    @Override
-    public Observable<List<Coin>> search(Search search) {
-        return null;
     }
 
 

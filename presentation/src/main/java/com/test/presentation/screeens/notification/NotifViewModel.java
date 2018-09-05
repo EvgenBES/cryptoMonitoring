@@ -1,7 +1,6 @@
 package com.test.presentation.screeens.notification;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.test.com.testproject.R;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import com.test.app.App;
 import com.test.domain.entity.Coin;
 import com.test.domain.usecases.AddNotifUseCase;
 import com.test.domain.usecases.DeleteNotifUseCase;
+import com.test.domain.usecases.EditNotifUseCase;
 import com.test.domain.usecases.GetListCoinUseCase;
 import com.test.domain.usecases.GetNotifListUseCase;
 import com.test.domain.usecases.SearchCoinLocalUseCase;
@@ -22,7 +22,9 @@ import com.test.presentation.base.recycler.NotifItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
+
+import android.support.v4.util.ArraySet;
 
 import javax.inject.Inject;
 
@@ -34,10 +36,7 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
     public NotifItemAdapter adapter = new NotifItemAdapter();
 
-    Random random = new Random();
-
-
-    private ArrayList<String> listCoin = new ArrayList<>();
+    private Set<String> listCoin = new ArraySet<>();
 
     @Inject
     public GetNotifListUseCase notifListUseCase;
@@ -53,6 +52,9 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
     @Inject
     public SearchCoinLocalUseCase searchCoin;
+
+    @Inject
+    public EditNotifUseCase editNotifUseCase;
 
 
     @Override
@@ -89,7 +91,12 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
                     @Override
                     public void onNext(ClickedItemModel clickedItemModel) {
-                        router.editDialog();
+                        router.editDialog(
+                                clickedItemModel.getEntity().getIdNotif(),
+                                clickedItemModel.getEntity().getName(),
+                                clickedItemModel.getEntity().getPricePosition(),
+                                clickedItemModel.getEntity().getMotionPrice()
+                        );
                     }
 
                     @Override
@@ -103,7 +110,6 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
                     }
                 });
 
-
         listCoinUseCase
                 .getCoins()
                 .subscribe(new Consumer<List<Coin>>() {
@@ -115,56 +121,15 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
                     }
                 })
                 .isDisposed();
-
-    }
-
-    /**
-     * TODO до реализовать диалоговые окна! Ввод данных, поиск из списка, изменение!
-     *
-     * @param id элемента из БД который мы меняем
-     */
-
-    private void onClickEditNotif(int id) {
-        final long editCoinId = id;
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(router.getActivity(), AlertDialog.THEME_HOLO_DARK);
-        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-        builder
-                .setView(inflater.inflate(R.layout.item_notif_edit_dialog, null))
-                // Add action buttons
-                .setPositiveButton(R.string.editNotif, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-//                        Coin(long id, String name, String symbol, String image, int motion, double position)
-
-
-//                        //TODO переделать под изменение одного поля базы
-//                        addNotifUseCase.addNotif(new Coin(
-//                                editCoinId,
-//                                "Magarita",
-//                                random.nextInt(999),
-//                                random.nextBoolean()));
-
-                    }
-                })
-                .setNegativeButton(R.string.deletNotif, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        deleteNotifUseCase
-                                .deleteNotif(editCoinId);
-
-                        showDeleteToast();
-                    }
-                })
-                .show();
-
     }
 
 
     public void onClickAddNotif() {
-        router.addDialog(listCoin);
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i <= listCoin.size() - 1; i++) {
+            list.add(listCoin.iterator().next());
+        }
+        router.addDialog(list);
     }
 
 
@@ -173,37 +138,69 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
     }
 
 
-    public void showDeleteToast() {
-        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-        View toastLayout = inflater.inflate(R.layout.custom_del_notif_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_del_toast_image));
+    public void addNotifBd(final String coinName, final double priceCoin, final boolean motion, boolean result, Activity activity) {
+        if (result) {
+            searchCoin
+                    .searchCoin(coinName)
+                    .subscribe(new Consumer<List<Coin>>() {
+                        @Override
+                        public void accept(List<Coin> coins) throws Exception {
+                            addNotifUseCase.addNotif(new Coin(0, coins.get(coins.size() - 1).getId(), coinName, priceCoin, motion));
+                        }
+                    })
+                    .isDisposed();
+            showAddNotifToast(activity);
+        } else {
+            showFalseNotifToast(activity);
+        }
+    }
 
+    public void editNotifBd(int idNotif, double editPrice, boolean morionPrice, boolean result, Activity activity) {
+        if (result) {
+            editNotifUseCase
+                    .editNotif(idNotif, editPrice, morionPrice);
+            showEditNotifToast(activity);
+        } else {
+            showFalseNotifToast(activity);
+        }
+    }
+
+    public void deletNotif(int idNotif, Activity activity) {
+        deleteNotifUseCase.deleteNotif(idNotif);
+        showDeleteToast(activity);
+    }
+
+
+    public void showDeleteToast(Activity activity) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View toastLayout = inflater.inflate(R.layout.custom_del_notif_toast, (ViewGroup) activity.findViewById(R.id.custom_del_toast_image));
+        getTost(toastLayout);
+    }
+
+    public void showAddNotifToast(Activity activity) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View toastLayout = inflater.inflate(R.layout.custom_add_notif_toast, (ViewGroup) activity.findViewById(R.id.custom_add_notif_toast_image));
+        getTost(toastLayout);
+    }
+
+    public void showEditNotifToast(Activity activity) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View toastLayout = inflater.inflate(R.layout.custom_add_notif_toast, (ViewGroup) activity.findViewById(R.id.custom_add_notif_toast_image));
+        getTost(toastLayout);
+    }
+
+    public void showFalseNotifToast(Activity activity) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View toastLayout = inflater.inflate(R.layout.custom_false_notif_toast, (ViewGroup) activity.findViewById(R.id.custom_toast_image));
+        getTost(toastLayout);
+    }
+
+
+    private void getTost(View toastLayout) {
         Toast toast = new Toast(App.getContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
         toast.setView(toastLayout);
         toast.show();
-    }
-
-    public void showAddNotifToast() {
-        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-        View toastLayout = inflater.inflate(R.layout.custom_add_notif_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_notif_toast_image));
-
-        Toast toast = new Toast(App.getContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
-        toast.setView(toastLayout);
-        toast.show();
-    }
-
-    public void addNotifBd(final String coinName, final double priceCoin, final boolean motion, boolean result) {
-        searchCoin
-                .searchCoin(coinName)
-                .subscribe(new Consumer<List<Coin>>() {
-                    @Override
-                    public void accept(List<Coin> coins) throws Exception {
-                        addNotifUseCase.addNotif(new Coin(0, coins.get(coins.size() - 1).getId(), coinName, priceCoin, motion));
-                    }
-                })
-                .isDisposed();
     }
 }

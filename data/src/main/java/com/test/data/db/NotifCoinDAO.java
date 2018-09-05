@@ -19,10 +19,10 @@ public interface NotifCoinDAO {
     @Insert
     void insert(NotifCoinResponse notifCoinResponse); //add coin
 
-    @Update
-    void update(NotifCoinResponse notifCoinResponse);
+    @Query("UPDATE " + TABLE_NAME + " SET pricePosition = :price, motionPrice = :motionPrice WHERE idNotif = :idNotif")
+    void editNitif(int idNotif, double price, boolean motionPrice);
 
-    @Query("DELETE FROM notif WHERE idNotif = :coinId")
+    @Query("DELETE FROM " + TABLE_NAME + " WHERE idNotif = :coinId")
     void delete(long coinId);
 
     @Query("DELETE FROM " + TABLE_NAME)

@@ -1,8 +1,8 @@
 package com.test.presentation.base.recycler;
 
-import com.test.domain.entity.DomainModel;
+import com.test.domain.entity.Coin;
 
-public class ClickedItemModel<Entity extends DomainModel> {
+public class ClickedItemModel<Entity extends Coin> {
 
     private Entity entity;
     private int position;

@@ -39,7 +39,6 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -60,7 +59,6 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding.recyclerNotif.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerNotif.setHasFixedSize(true);
         binding.recyclerNotif.setAdapter(viewModel.adapter);
@@ -74,15 +72,16 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
         super.onResume();
     }
 
-    public static Intent getIntent(Activity activity) {
-        Intent intent = new Intent(activity, NotifViewActivity.class);
-        return intent;
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         router.getActivity().finish();
+    }
+
+    public static Intent getIntent(Activity activity) {
+        Intent intent = new Intent(activity, NotifViewActivity.class);
+        return intent;
     }
 
     public void addNotifDialog(ArrayList<String> listSearchCoin) {
@@ -93,12 +92,26 @@ public class NotifViewActivity extends BaseMvvmActivity<NotifViewModel, Activity
         dialog.show(getSupportFragmentManager(), "AddNotificationDialog");
     }
 
-    public void editNotifDialog() {
+    public void editNotifDialog(int idNotif, String name, double price, boolean motionPrice) {
         EditNotificationDialog dialog = new EditNotificationDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("massageIdNotif", idNotif);
+        bundle.putString("massageName", name);
+        bundle.putDouble("massagePrice", price);
+        bundle.putBoolean("massageMotionPrice", motionPrice);
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "EditNotificationDialog");
     }
 
     public void addNotificationBd(String coinName, double priceCoin, boolean motion, boolean result) {
-        router.addNotif(coinName, priceCoin, motion, result);
+        router.addNotif(coinName, priceCoin, motion, result, router.getActivity());
+    }
+
+    public void editNotificationBd(int idNotif, double editPrice, boolean morionPrice, boolean result) {
+        router.editNotif(idNotif, editPrice, morionPrice, result, router.getActivity());
+    }
+
+    public void deleteNotificationBd(int idNotif) {
+        router.deletNotif(idNotif, router.getActivity());
     }
 }

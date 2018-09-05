@@ -79,7 +79,7 @@ public abstract class BaseRecyclerViewAdapter
                 @Override
                 public void onClick(View view) {
                     int pos = holder.getAdapterPosition();
-                    itemClickSubject.onNext(new ClickedItemModel(items.get(pos), pos));
+                    itemClickSubject.onNext(new ClickedItemModel((Coin)items.get(pos), pos));
                     holder.getViewModel().onItemClick();
                 }
             });

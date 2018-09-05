@@ -110,7 +110,7 @@ public class StartViewActivity extends BaseMvvmActivity<StartViewModel, StartAct
 
         } else {
             LayoutInflater inflater = router.getActivity().getLayoutInflater();
-            View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast_falce, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
+            View toastLayout = inflater.inflate(R.layout.custom_falce_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
             getTost(toastLayout);
         }
     }
