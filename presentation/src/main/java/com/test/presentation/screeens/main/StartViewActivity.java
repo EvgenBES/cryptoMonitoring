@@ -96,30 +96,10 @@ public class StartViewActivity extends BaseMvvmActivity<StartViewModel, StartAct
     }
 
     public void loadQuantityCoin(double quantity, boolean result) {
-        showEditQuantityToast(result);
         coin.setQuantity(quantity);
-        router.loadQuantityCoins(coin);
+        router.loadQuantityCoins(coin, result, router.getActivity());
     }
 
 
-    public void showEditQuantityToast(boolean result) {
-        if (result) {
-            LayoutInflater inflater = router.getActivity().getLayoutInflater();
-            View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
-            getTost(toastLayout);
 
-        } else {
-            LayoutInflater inflater = router.getActivity().getLayoutInflater();
-            View toastLayout = inflater.inflate(R.layout.custom_falce_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
-            getTost(toastLayout);
-        }
-    }
-
-    private void getTost(View toastLayout) {
-        Toast toast = new Toast(App.getContext());
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
-        toast.setView(toastLayout);
-        toast.show();
-    }
 }

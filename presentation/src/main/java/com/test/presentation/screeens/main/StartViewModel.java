@@ -1,5 +1,6 @@
 package com.test.presentation.screeens.main;
 
+import android.app.Activity;
 import android.databinding.ObservableField;
 import android.test.com.testproject.R;
 import android.view.Gravity;
@@ -134,14 +135,14 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
 
 
     private void onClickAddQuantityCoin() {
-                        //Show Toast
-                        LayoutInflater inflater = router.getActivity().getLayoutInflater();
-                        View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
+        //Show Toast
+        LayoutInflater inflater = router.getActivity().getLayoutInflater();
+        View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_add_toast_image));
 
-                        Toast toast = new Toast(App.getContext());
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
-                        toast.setView(toastLayout);
+        Toast toast = new Toast(App.getContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
+        toast.setView(toastLayout);
     }
 
 
@@ -247,12 +248,36 @@ public class StartViewModel extends BaseViewModel<StartRouter, Coin> {
         PieView.setPercent(piePosition);
     }
 
-    public void addQuantityCoinBd(Coin coin) {
-        editQuentityUseCase
-                .editCoin(coin);
+    public void addQuantityCoinBd(Coin coin, boolean result, Activity activity) {
+        if (result) {
+            editQuentityUseCase
+                    .editCoin(coin);
+        }
+        showEditQuantityToast(result, activity);
+
     }
 
 
+    public void showEditQuantityToast(boolean result, Activity activity) {
+        if (result) {
+            LayoutInflater inflater = activity.getLayoutInflater();
+            View toastLayout = inflater.inflate(R.layout.custom_edit_quantity_toast, (ViewGroup) activity.findViewById(R.id.custom_add_toast_image));
+            getTost(toastLayout);
+
+        } else {
+            LayoutInflater inflater = activity.getLayoutInflater();
+            View toastLayout = inflater.inflate(R.layout.custom_falce_edit_quantity_toast, (ViewGroup) activity.findViewById(R.id.custom_add_toast_image));
+            getTost(toastLayout);
+        }
+    }
+
+    private void getTost(View toastLayout) {
+        Toast toast = new Toast(App.getContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 275);
+        toast.setView(toastLayout);
+        toast.show();
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.test.presentation.screeens.main;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.test.domain.entity.Coin;
@@ -24,11 +25,11 @@ public class StartRouter extends BaseRouter<StartViewActivity> {
     }
 
     public void goDialog(Coin entity) {
-       activity.startDialog(entity);
+        activity.startDialog(entity);
     }
 
-    public void loadQuantityCoins(Coin coin) {
+    public void loadQuantityCoins(Coin coin, boolean result, Activity activity) {
         StartViewModel model = new StartViewModel();
-        model.addQuantityCoinBd(coin);
+        model.addQuantityCoinBd(coin, result, activity);
     }
 }
