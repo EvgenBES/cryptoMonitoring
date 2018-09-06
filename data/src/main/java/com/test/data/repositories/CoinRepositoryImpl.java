@@ -138,6 +138,28 @@ public class CoinRepositoryImpl implements CoinRepository {
     }
 
     @Override
+    public Flowable<List<Coin>> getListCoinDao() {
+        return coinDataBase
+                .getCoinDAO()
+                .getAll()
+                .map(new Function<List<CoinResponces>, List<Coin>>() {
+                    @Override
+                    public List<Coin> apply(List<CoinResponces> coinResponces) throws Exception {
+                        final List<Coin> list = new ArrayList<>();
+                        for (CoinResponces coin : coinResponces) {
+                            list.add(new Coin(
+                                    coin.getId(),
+                                    coin.getName(),
+                                    coin.getSymbol(),
+                                    coin.getPrice(),
+                                    coin.getRank()));
+                        }
+                        return list;
+                    }
+                });
+    }
+
+    @Override
     public Flowable<List<Coin>> getBdCoin() {
         return coinDataBase
                 .getUserDAO()

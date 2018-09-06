@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/custom_toast_layout"
-    android:background="@drawable/border_radius_del_toast_7dp"
+    android:background="@drawable/border_radius_toast_7dp_green"
     android:orientation="horizontal"
     android:padding="10dp">
 
@@ -11,7 +11,7 @@
         android:id="@+id/custom_del_toast_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_times_circle" />
+        android:src="@drawable/ic_delete_white_24dp" />
 
     <TextView
         android:id="@+id/custom_toast_message"

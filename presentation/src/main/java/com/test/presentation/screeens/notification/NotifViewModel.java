@@ -1,7 +1,9 @@
 package com.test.presentation.screeens.notification;
 
 import android.app.Activity;
+import android.databinding.ObservableInt;
 import android.test.com.testproject.R;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.test.domain.entity.Coin;
 import com.test.domain.usecases.AddNotifUseCase;
 import com.test.domain.usecases.DeleteNotifUseCase;
 import com.test.domain.usecases.EditNotifUseCase;
+import com.test.domain.usecases.GetCoinDaoUseCase;
 import com.test.domain.usecases.GetListCoinUseCase;
 import com.test.domain.usecases.GetNotifListUseCase;
 import com.test.domain.usecases.SearchCoinLocalUseCase;
@@ -22,9 +25,6 @@ import com.test.presentation.base.recycler.NotifItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import android.support.v4.util.ArraySet;
 
 import javax.inject.Inject;
 
@@ -34,9 +34,9 @@ import io.reactivex.functions.Consumer;
 
 public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
 
+    public ObservableInt coinProgress = new ObservableInt(View.VISIBLE);
     public NotifItemAdapter adapter = new NotifItemAdapter();
-
-    private Set<String> listCoin = new ArraySet<>();
+    private List<Coin> listCoin = new ArrayList<>();
 
     @Inject
     public GetNotifListUseCase notifListUseCase;
@@ -45,16 +45,19 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
     public AddNotifUseCase addNotifUseCase;
 
     @Inject
-    public DeleteNotifUseCase deleteNotifUseCase;
+    public EditNotifUseCase editNotifUseCase;
 
     @Inject
-    public GetListCoinUseCase listCoinUseCase;
+    public DeleteNotifUseCase deleteNotifUseCase;
 
     @Inject
     public SearchCoinLocalUseCase searchCoin;
 
     @Inject
-    public EditNotifUseCase editNotifUseCase;
+    public GetCoinDaoUseCase coinDaoUseCase;
+
+    @Inject
+    public GetListCoinUseCase listCoinUseCase;
 
 
     @Override
@@ -110,33 +113,46 @@ public class NotifViewModel extends BaseViewModel<NotifRouter, Coin> {
                     }
                 });
 
-        listCoinUseCase
-                .getCoins()
+        coinDaoUseCase
+                .getListCoinDao()
                 .subscribe(new Consumer<List<Coin>>() {
                     @Override
                     public void accept(List<Coin> coins) throws Exception {
-                        for (Coin coin : coins) {
-                            listCoin.add(coin.getName());
+                        if (coins.size() == 0) {
+                            listCoinUseCase
+                                    .getCoins()
+                                    .subscribe(new Consumer<List<Coin>>() {
+                                        @Override
+                                        public void accept(List<Coin> coins) throws Exception {
+                                            listCoin = coins;
+                                            coinProgress.set(View.GONE);
+                                        }
+
+                                    }
+
+                                    )
+                                    .isDisposed();
+                        } else {
+                            listCoin = coins;
+                            coinProgress.set(View.GONE);
                         }
+
                     }
                 })
                 .isDisposed();
     }
 
-
-    public void onClickAddNotif() {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i <= listCoin.size() - 1; i++) {
-            list.add(listCoin.iterator().next());
-        }
-        router.addDialog(list);
-    }
-
-
     public void onClickBack() {
         router.getActivity().finish();
     }
 
+    public void onClickAddNotif() {
+        ArrayList<String> list = new ArrayList<>();
+        for (Coin coins : listCoin) {
+            list.add(coins.getName());
+        }
+        router.addDialog(list);
+    }
 
     public void addNotifBd(final String coinName, final double priceCoin, final boolean motion, boolean result, Activity activity) {
         if (result) {

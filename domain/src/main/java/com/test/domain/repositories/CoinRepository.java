@@ -14,6 +14,8 @@ public interface CoinRepository {
 
     //GET Internet
     Flowable<List<Coin>> getAll();
+    //GET ListCoinDAO
+    Flowable<List<Coin>> getListCoinDao();
 
 
     //GET Local BD UserCoin

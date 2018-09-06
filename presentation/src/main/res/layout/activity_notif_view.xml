@@ -70,6 +70,16 @@
             android:layout_below="@id/topLayout"
             android:layout_marginTop="12dp">
 
+            <ProgressBar
+                android:id="@+id/progressNotif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:translationZ="99dp"
+                app:visibility="@{viewModel.coinProgress}"
+                />
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -106,7 +116,7 @@
             app:fabSize="normal"
             app:srcCompat="@drawable/ic_plus_23dp"
             android:onClick="@{(v)->viewModel.onClickAddNotif()}"
-            />
+            tools:ignore="VectorDrawableCompat" />
 
 
         <LinearLayout
