@@ -112,7 +112,6 @@ public class CoinRepositoryImpl implements CoinRepository {
                     }
                 })
                 .map(new Function<List<CoinResponces>, List<Coin>>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public List<Coin> apply(List<CoinResponces> coinResponces) throws Exception {
                         final List<Coin> list = new ArrayList<>();
@@ -124,15 +123,7 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     coin.getPrice(),
                                     coin.getRank()));
                         }
-
-                        list.sort(new Comparator<Coin>() {
-                            @Override
-                            public int compare(Coin coin, Coin coin2) {
-                                return Long.compare(coin.getRank(), coin2.getRank());
-                            }
-                        });
-
-                        return list;
+                        return getSortCoinRank(list);
                     }
                 });
     }
@@ -165,7 +156,6 @@ public class CoinRepositoryImpl implements CoinRepository {
                 .getUserDAO()
                 .getAll()
                 .map(new Function<List<UserCoinResponse>, List<Coin>>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public List<Coin> apply(List<UserCoinResponse> userCoinResponses) throws Exception {
                         final List<Coin> list = new ArrayList<>();
@@ -177,17 +167,7 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     coin.getPrice(),
                                     coin.getQuantity()));
                         }
-
-                        list.sort(new Comparator<Coin>() {
-                            @Override
-                            public int compare(Coin coin, Coin coin2) {
-                                return Double.compare(coin.getPrice() * coin.getQuantity(), coin2.getPrice() * coin2.getQuantity());
-                            }
-                        });
-
-                        Collections.reverse(list);
-
-                        return list;
+                        return getSortCoinPrice(list);
                     }
                 });
     }
@@ -432,5 +412,48 @@ public class CoinRepositoryImpl implements CoinRepository {
         } else {
             return "desc";
         }
+    }
+
+    private List<Coin> getSortCoinRank(List<Coin> listCoinSorn) {
+        boolean result;
+        do {
+            result = false;
+            Coin tempCoin;
+            for (int i = 0; i != listCoinSorn.size() - 1; i++) {
+                if (listCoinSorn.get(i).getRank() > listCoinSorn.get(i + 1).getRank()) {
+                    tempCoin = listCoinSorn.get(i + 1);
+                    listCoinSorn.remove(i + 1);
+                    listCoinSorn.add(i, tempCoin);
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } while (!result);
+
+        return listCoinSorn;
+    }
+
+    private List<Coin> getSortCoinPrice(List<Coin> listCoinSorn) {
+        boolean result;
+        do {
+            result = false;
+            Coin tempCoin;
+            for (int i = 0; i != listCoinSorn.size() - 1; i++) {
+                if ((listCoinSorn.get(i).getPrice() * listCoinSorn.get(i).getQuantity()) > (listCoinSorn.get(i + 1).getPrice() * listCoinSorn.get(i + 1).getQuantity())) {
+                    tempCoin = listCoinSorn.get(i + 1);
+                    listCoinSorn.remove(i + 1);
+                    listCoinSorn.add(i, tempCoin);
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } while (!result);
+
+        Collections.reverse(listCoinSorn);
+        return listCoinSorn;
     }
 }

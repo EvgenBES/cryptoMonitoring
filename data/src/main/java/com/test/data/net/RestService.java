@@ -48,8 +48,8 @@ public class RestService {
                 .build();
 
         gson = new GsonBuilder()
-//                .setPrettyPrinting()
-                .registerTypeAdapter(Coin.class, new CoinJsonAdapter())
+                .setPrettyPrinting()
+//                .registerTypeAdapter(Coin.class, new CoinJsonAdapter())
                 .create();
 
         this.restApi = new Retrofit.Builder()

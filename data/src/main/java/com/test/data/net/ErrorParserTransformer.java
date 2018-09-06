@@ -1,5 +1,7 @@
 package com.test.data.net;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.test.domain.entity.Error;
@@ -35,6 +37,7 @@ public class ErrorParserTransformer<S> {
                         .onErrorResumeNext(new Function<Throwable, Publisher<T>>() {
                             @Override
                             public Publisher<T> apply(Throwable throwable) throws Exception {
+                                Log.e("AAQQ", "apply: " + throwable.getMessage().toString());
                                 Error error;
                                 if (throwable instanceof HttpException) {
                                     HttpException httpException = (HttpException) throwable;

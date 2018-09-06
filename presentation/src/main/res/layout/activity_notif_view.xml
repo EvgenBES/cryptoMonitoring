@@ -90,7 +90,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerNotif"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:paddingBottom="60dp">
 
                 </android.support.v7.widget.RecyclerView>
 
@@ -114,9 +115,8 @@
             app:borderWidth="0dp"
             app:elevation="6dp"
             app:fabSize="normal"
-            app:srcCompat="@drawable/ic_plus_23dp"
-            android:onClick="@{(v)->viewModel.onClickAddNotif()}"
-            tools:ignore="VectorDrawableCompat" />
+            android:src="@drawable/ic_plus_23dp"
+            android:onClick="@{(v)->viewModel.onClickAddNotif()}" />
 
 
         <LinearLayout

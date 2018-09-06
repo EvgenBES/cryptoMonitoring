@@ -16,6 +16,7 @@ import com.test.presentation.base.BaseViewModel;
 import com.test.presentation.base.recycler.ClickedItemModel;
 import com.test.presentation.base.recycler.ListRightFragmentItemAdapter;
 import com.test.presentation.screeens.list.ListRouter;
+import com.test.presentation.screeens.list.ListViewActivity;
 
 import java.util.List;
 
@@ -208,5 +209,3 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 
 
 }
-
-

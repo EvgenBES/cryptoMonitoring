@@ -8,6 +8,7 @@ import android.test.com.testproject.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -33,6 +34,7 @@ public class AddNotificationDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.item_notif_add_dialog, container, false);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         listCoins = getArguments().getStringArrayList("listSearchCoin");
 
         searchCoin = view.findViewById(R.id.searchCoin);

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,10 +23,10 @@ public class QuantityDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.item_start_dialog, container, false);
-        dQuantity = getArguments().getDouble("massage");
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
+        dQuantity = getArguments().getDouble("massage");
         editQuantity = view.findViewById(R.id.coinQuentity);
         actionAdd = view.findViewById(R.id.actionAdd);
         actionBack = view.findViewById(R.id.actionBack);
@@ -55,4 +56,6 @@ public class QuantityDialog extends DialogFragment {
 
         return view;
     }
+
+
 }
