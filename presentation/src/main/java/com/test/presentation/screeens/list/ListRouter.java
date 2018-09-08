@@ -12,6 +12,7 @@ public class ListRouter extends BaseRouter<ListViewActivity> {
         super(activity);
     }
 
+
     public void goToStartView() {
         Intent intent = StartViewActivity.getIntent(activity);
         activity.startActivity(intent);

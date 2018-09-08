@@ -17,6 +17,7 @@ public class Coin implements DomainModel{
     private boolean motionPrice;
     private double pricePosition;
     private int idNotif;
+    private long lastUpdated;
 
 
     //Constructor get all coin local bd
@@ -57,12 +58,13 @@ public class Coin implements DomainModel{
     }
 
     //Constructor Add Right List
-    public Coin(long id, String name, String symbol, double price, long rank) {
+    public Coin(long id, String name, String symbol, double price, long rank, long lastUpdated) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
         this.price = price;
         this.rank = rank;
+        this.lastUpdated = lastUpdated;
     }
 
     //Delete
@@ -189,5 +191,13 @@ public class Coin implements DomainModel{
 
     public void setPricePosition(double pricePosition) {
         this.pricePosition = pricePosition;
+    }
+
+    public long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(long lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

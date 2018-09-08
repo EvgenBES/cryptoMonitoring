@@ -1,6 +1,12 @@
 package com.test.presentation.screeens.list.fragment.right;
 
+import android.app.usage.NetworkStatsManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.ObservableInt;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.test.com.testproject.R;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,11 +29,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
-import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-
-import static android.os.SystemClock.sleep;
 
 public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 
@@ -58,58 +61,13 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
                     @Override
                     public void accept(List<Coin> coins) throws Exception {
                         adapter.setItems(coins);
+                        if (coins.isEmpty() || (coins.get(coins.size() - 1).getLastUpdated() + 300) < (System.currentTimeMillis() / 1000)) {
+                            validationInternet();
+                        }
                         coinProgress.set(View.GONE);
                     }
                 })
                 .isDisposed();
-
-
-
-
-
-//                .subscribe(new SingleObserver<List<Coin>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(List<Coin> coins) {
-//                        adapter.setItems(coins);
-//                        coinProgress.set(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//                });
-
-
-//                .getCoins()
-//                .subscribe(new Observer<List<Coin>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        getCompositeDisposable().add(d);
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Coin> coins) {
-//                        adapter.setItems(coins);
-//
-//                        sleep(1000);
-//                        coinProgress.set(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-////                        router.showError(e);
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                    }
-//                });
 
 
 //        adapter
@@ -173,7 +131,6 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 
                     @Override
                     public void onNext(ClickedItemModel<Coin> clickedItemModel) {
-
                         Toast.makeText(App.getContext(), "You add " + clickedItemModel.getEntity().getName(), Toast.LENGTH_SHORT).show();
 
                         addCoinUseCase
@@ -190,6 +147,8 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 
                     }
                 });
+
+
     }
 
 
@@ -197,7 +156,7 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
     //TODO доделать вызов диалогового окна, перед тем как добавить монетку в БД, возможно юзер промахнулся
 
 
-    public void showCostomToast() {
+    private void showCostomToast() {
         LayoutInflater inflater = router.getActivity().getLayoutInflater();
         View toastLayout = inflater.inflate(R.layout.custom_add_toast, (ViewGroup) router.getActivity().findViewById(R.id.custom_toast_image));
 
@@ -207,5 +166,22 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
         toast.show();
     }
 
+    private void validationInternet() {
+        WifiManager wifiManager = (WifiManager) App.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        if (!wifiManager.isWifiEnabled() &&
+                !connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()) {
+            Toast.makeText(App.getContext(), "The data is not relevant, connect the Internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            WifiManager wifiManager = (WifiManager) App.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            Log.e("AAQQ", "onReceive: " + wifiManager.toString());
+        }
+    };
 }

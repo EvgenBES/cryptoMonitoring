@@ -37,7 +37,6 @@ public class ErrorParserTransformer<S> {
                         .onErrorResumeNext(new Function<Throwable, Publisher<T>>() {
                             @Override
                             public Publisher<T> apply(Throwable throwable) throws Exception {
-                                Log.e("AAQQ", "apply: " + throwable.getMessage().toString());
                                 Error error;
                                 if (throwable instanceof HttpException) {
                                     HttpException httpException = (HttpException) throwable;

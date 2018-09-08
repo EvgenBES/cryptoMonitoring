@@ -78,6 +78,7 @@ public class CoinRepositoryImpl implements CoinRepository {
                                                 coindRespons.setSymbol(currency.getData().get(i).getSymbol());
                                                 coindRespons.setPrice(currency.getData().get(i).getQuotes().getUSD().getPrice());
                                                 coindRespons.setRank(currency.getData().get(i).getRank());
+                                                coindRespons.setLastUpdated(currency.getData().get(i).getLastUpdated());
 
                                                 coinDataBase.getCoinDAO().insert(coindRespons);
                                             }
@@ -86,16 +87,14 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     .onErrorResumeNext(new Function<Throwable, Publisher<Currency>>() {
                                         @Override
                                         public Publisher<Currency> apply(Throwable throwable) throws Exception {
-                                            Log.e("AAQQ", "apply: Error позиция 1" + throwable.getMessage().toString());
                                             if (throwable instanceof Error) {
                                                 Error error = (Error) throwable;
-                                                if (error.getErrorType() == ErrorType.INTERNET_IS_NOT_AVAILABLE
-                                                        && !coinResponces.isEmpty()) {
-                                                    Log.e("AAQQ", "apply: Error позиция 2");
-                                                    return Flowable.just(currency);
+                                                if (error.getErrorType() == ErrorType.INTERNET_IS_NOT_AVAILABLE) {
+                                                    Log.e("AAQQ", "Error: INTERNET_IS_NOT_AVAILABLE");
+                                                } else if (error.getErrorType() == ErrorType.UNEXPECTED_ERROR) {
+                                                    Log.e("AAQQ", "Error: UNEXPECTED_ERROR");
                                                 }
                                             }
-                                            Log.e("AAQQ", "apply: Error позиция 3");
                                             return Flowable.just(currency);
                                         }
                                     })
@@ -121,7 +120,8 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     coin.getName(),
                                     coin.getSymbol(),
                                     coin.getPrice(),
-                                    coin.getRank()));
+                                    coin.getRank(),
+                                    coin.getLastUpdated()));
                         }
                         return getSortCoinRank(list);
                     }
@@ -415,45 +415,48 @@ public class CoinRepositoryImpl implements CoinRepository {
     }
 
     private List<Coin> getSortCoinRank(List<Coin> listCoinSorn) {
-        boolean result;
-        do {
-            result = false;
-            Coin tempCoin;
-            for (int i = 0; i != listCoinSorn.size() - 1; i++) {
-                if (listCoinSorn.get(i).getRank() > listCoinSorn.get(i + 1).getRank()) {
-                    tempCoin = listCoinSorn.get(i + 1);
-                    listCoinSorn.remove(i + 1);
-                    listCoinSorn.add(i, tempCoin);
-                    result = false;
-                    break;
-                } else {
-                    result = true;
+        if (listCoinSorn.size() > 0) {
+            boolean result;
+            do {
+                result = false;
+                Coin tempCoin;
+                for (int i = 0; i != listCoinSorn.size() - 1; i++) {
+                    if (listCoinSorn.get(i).getRank() > listCoinSorn.get(i + 1).getRank()) {
+                        tempCoin = listCoinSorn.get(i + 1);
+                        listCoinSorn.remove(i + 1);
+                        listCoinSorn.add(i, tempCoin);
+                        result = false;
+                        break;
+                    } else {
+                        result = true;
+                    }
                 }
-            }
-        } while (!result);
-
+            } while (!result);
+        }
         return listCoinSorn;
     }
 
     private List<Coin> getSortCoinPrice(List<Coin> listCoinSorn) {
-        boolean result;
-        do {
-            result = false;
-            Coin tempCoin;
-            for (int i = 0; i != listCoinSorn.size() - 1; i++) {
-                if ((listCoinSorn.get(i).getPrice() * listCoinSorn.get(i).getQuantity()) > (listCoinSorn.get(i + 1).getPrice() * listCoinSorn.get(i + 1).getQuantity())) {
-                    tempCoin = listCoinSorn.get(i + 1);
-                    listCoinSorn.remove(i + 1);
-                    listCoinSorn.add(i, tempCoin);
-                    result = false;
-                    break;
-                } else {
-                    result = true;
+        if (listCoinSorn.size() > 0) {
+            boolean result;
+            do {
+                result = false;
+                Coin tempCoin;
+                for (int i = 0; i != listCoinSorn.size() - 1; i++) {
+                    if ((listCoinSorn.get(i).getPrice() * listCoinSorn.get(i).getQuantity()) > (listCoinSorn.get(i + 1).getPrice() * listCoinSorn.get(i + 1).getQuantity())) {
+                        tempCoin = listCoinSorn.get(i + 1);
+                        listCoinSorn.remove(i + 1);
+                        listCoinSorn.add(i, tempCoin);
+                        result = false;
+                        break;
+                    } else {
+                        result = true;
+                    }
                 }
-            }
-        } while (!result);
+            } while (!result);
 
-        Collections.reverse(listCoinSorn);
+            Collections.reverse(listCoinSorn);
+        }
         return listCoinSorn;
     }
 }
