@@ -1,6 +1,5 @@
 package com.test.presentation.screeens.list.fragment.right;
 
-import android.app.usage.NetworkStatsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,13 +17,18 @@ import com.test.app.App;
 import com.test.domain.entity.Coin;
 import com.test.domain.usecases.AddCoinUseCase;
 import com.test.domain.usecases.GetListCoinUseCase;
+import com.test.domain.usecases.SearchListFragmentCoinUseCase;
+import com.test.executor.EditTextSearch;
 import com.test.presentation.base.BaseViewModel;
 import com.test.presentation.base.recycler.ClickedItemModel;
 import com.test.presentation.base.recycler.ListRightFragmentItemAdapter;
 import com.test.presentation.screeens.list.ListRouter;
 import com.test.presentation.screeens.list.ListViewActivity;
 
+import io.reactivex.Observable;
+
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -37,11 +41,17 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
     public ListRightFragmentItemAdapter adapter = new ListRightFragmentItemAdapter();
     public ObservableInt coinProgress = new ObservableInt(View.VISIBLE);
 
+    private Observable<String> editSearchText = EditTextSearch.getTextWatcherObservable(ListViewActivity.editTextSearchView);
+
+
     @Inject
     public GetListCoinUseCase getListCoinUseCase;
 
     @Inject
     public AddCoinUseCase addCoinUseCase;
+
+    @Inject
+    public SearchListFragmentCoinUseCase searchListCoinUseCase;
 
 
     @Override
@@ -135,6 +145,40 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 
                         addCoinUseCase
                                 .addCoin(clickedItemModel.getEntity());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+        editSearchText
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        searchListCoinUseCase
+                                .searchListCoin(s)
+                                .subscribe(new Consumer<List<Coin>>() {
+                                    @Override
+                                    public void accept(List<Coin> coins) throws Exception {
+                                        adapter.setItems(coins);
+                                    }
+                                })
+                                .isDisposed();
+
                     }
 
                     @Override

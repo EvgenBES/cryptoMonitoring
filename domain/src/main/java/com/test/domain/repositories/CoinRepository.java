@@ -17,6 +17,9 @@ public interface CoinRepository {
     //GET ListCoinDAO
     Flowable<List<Coin>> getListCoinDao();
 
+    Flowable<List<Coin>> searchCoinName(String search);
+
+
 
     //GET Local BD UserCoin
     Flowable<List<Coin>> getBdCoin();

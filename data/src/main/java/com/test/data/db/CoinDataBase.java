@@ -28,6 +28,8 @@ public abstract class CoinDataBase extends RoomDatabase {
     }
 
     public abstract CoinDAO getCoinDAO();
+
     public abstract UserCoinDAO getUserDAO();
+
     public abstract NotifCoinDAO getNotifDAO();
 }

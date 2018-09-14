@@ -17,25 +17,11 @@ import retrofit2.http.Query;
 
 public interface RestApi {
 
-//    @GET("data/coin")
-//    Observable<List<CoinResponse>> getAllCoin();
-
-//    @GET("data/coin")
-//    Observable<List<UserCoinResponse>> getCoin(
-//            @Query(value = "where", encoded = true) String coinId);
-
-
     @GET("ticker")
     Flowable<Currency> getAllCoin(@Query("convert") String mBase,
                                   @Query("limit")Integer mLimit,
                                   @Query("sort")String mSort,
                                   @Query("structure")String mStructure);
-
-    @POST("data/coin/")
-    Observable<UserCoinResponse> addCoin(@Body UserCoinResponse userCoinResponse);
-
-    @PUT("data/coin/")
-    Observable<CoinResponse> editCoin(@Body CoinRequest coin);
 
     @GET("data/coin/search")
     Observable<List<CoinResponse>> searchCoin(@Query("symbol") String name);

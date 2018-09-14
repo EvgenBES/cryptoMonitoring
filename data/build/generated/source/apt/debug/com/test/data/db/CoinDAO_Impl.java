@@ -242,6 +242,88 @@ public class CoinDAO_Impl implements CoinDAO {
   }
 
   @Override
+  public Flowable<List<CoinResponces>> searchCoinName(String search) {
+    final String _sql = "SELECT * FROM coins WHERE name LIKE ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (search == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, search);
+    }
+    return RxRoom.createFlowable(__db, new String[]{"coins"}, new Callable<List<CoinResponces>>() {
+      @Override
+      public List<CoinResponces> call() throws Exception {
+        final Cursor _cursor = __db.query(_statement);
+        try {
+          final int _cursorIndexOfId = _cursor.getColumnIndexOrThrow("id");
+          final int _cursorIndexOfName = _cursor.getColumnIndexOrThrow("name");
+          final int _cursorIndexOfSymbol = _cursor.getColumnIndexOrThrow("symbol");
+          final int _cursorIndexOfRank = _cursor.getColumnIndexOrThrow("rank");
+          final int _cursorIndexOfPrice = _cursor.getColumnIndexOrThrow("price");
+          final int _cursorIndexOfMarketCapUsd = _cursor.getColumnIndexOrThrow("marketCapUsd");
+          final int _cursorIndexOfAvailableSupply = _cursor.getColumnIndexOrThrow("availableSupply");
+          final int _cursorIndexOfTotalSupply = _cursor.getColumnIndexOrThrow("totalSupply");
+          final int _cursorIndexOfPercentChange1h = _cursor.getColumnIndexOrThrow("percentChange1h");
+          final int _cursorIndexOfPercentChange24h = _cursor.getColumnIndexOrThrow("percentChange24h");
+          final int _cursorIndexOfPercentChange7d = _cursor.getColumnIndexOrThrow("percentChange7d");
+          final int _cursorIndexOfLastUpdated = _cursor.getColumnIndexOrThrow("lastUpdated");
+          final List<CoinResponces> _result = new ArrayList<CoinResponces>(_cursor.getCount());
+          while(_cursor.moveToNext()) {
+            final CoinResponces _item;
+            _item = new CoinResponces();
+            final long _tmpId;
+            _tmpId = _cursor.getLong(_cursorIndexOfId);
+            _item.setId(_tmpId);
+            final String _tmpName;
+            _tmpName = _cursor.getString(_cursorIndexOfName);
+            _item.setName(_tmpName);
+            final String _tmpSymbol;
+            _tmpSymbol = _cursor.getString(_cursorIndexOfSymbol);
+            _item.setSymbol(_tmpSymbol);
+            final int _tmpRank;
+            _tmpRank = _cursor.getInt(_cursorIndexOfRank);
+            _item.setRank(_tmpRank);
+            final double _tmpPrice;
+            _tmpPrice = _cursor.getDouble(_cursorIndexOfPrice);
+            _item.setPrice(_tmpPrice);
+            final long _tmpMarketCapUsd;
+            _tmpMarketCapUsd = _cursor.getLong(_cursorIndexOfMarketCapUsd);
+            _item.setMarketCapUsd(_tmpMarketCapUsd);
+            final long _tmpAvailableSupply;
+            _tmpAvailableSupply = _cursor.getLong(_cursorIndexOfAvailableSupply);
+            _item.setAvailableSupply(_tmpAvailableSupply);
+            final long _tmpTotalSupply;
+            _tmpTotalSupply = _cursor.getLong(_cursorIndexOfTotalSupply);
+            _item.setTotalSupply(_tmpTotalSupply);
+            final double _tmpPercentChange1h;
+            _tmpPercentChange1h = _cursor.getDouble(_cursorIndexOfPercentChange1h);
+            _item.setPercentChange1h(_tmpPercentChange1h);
+            final double _tmpPercentChange24h;
+            _tmpPercentChange24h = _cursor.getDouble(_cursorIndexOfPercentChange24h);
+            _item.setPercentChange24h(_tmpPercentChange24h);
+            final double _tmpPercentChange7d;
+            _tmpPercentChange7d = _cursor.getDouble(_cursorIndexOfPercentChange7d);
+            _item.setPercentChange7d(_tmpPercentChange7d);
+            final long _tmpLastUpdated;
+            _tmpLastUpdated = _cursor.getLong(_cursorIndexOfLastUpdated);
+            _item.setLastUpdated(_tmpLastUpdated);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
   public Flowable<List<CoinResponces>> getAll() {
     final String _sql = "SELECT * FROM coins";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);

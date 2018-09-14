@@ -14,11 +14,23 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.test.com.testproject.R;
 import android.test.com.testproject.databinding.ActivityListViewBinding;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.EditText;
 
+import com.test.executor.EditTextSearch;
 import com.test.presentation.base.BaseMvvmActivity;
+import com.test.presentation.base.recycler.ClickedItemModel;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 
 public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityListViewBinding, ListRouter> {
+    public static EditText editTextSearchView;
+
 
     @Override
     protected ListViewModel provideViewModel() {
@@ -31,7 +43,7 @@ public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityLi
     }
 
     @Override
-    protected ListRouter provideRouter() {
+    public ListRouter provideRouter() {
         return new ListRouter(this);
     }
 
@@ -54,10 +66,10 @@ public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityLi
         }
     };
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        editTextSearchView = findViewById(R.id.testIdSeart);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -77,6 +89,7 @@ public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityLi
         super.onResume();
     }
 
+
     public static Intent getIntent(Activity activity) {
         Intent intent = new Intent(activity, ListViewActivity.class);
         return intent;
@@ -86,13 +99,6 @@ public class ListViewActivity extends BaseMvvmActivity<ListViewModel, ActivityLi
     protected void onPause() {
         super.onPause();
         router.getActivity().finish();
-    }
-
-
-    public int getResorsId (String symbol) {
-        int resorsId = 0;
-        resorsId = getResources().getIdentifier(symbol, "drawable", getPackageName());
-        return resorsId;
     }
 
 

@@ -97,4 +97,5 @@ public abstract class BaseRecyclerViewAdapter
     public Observable<ClickedItemModel<Coin>> observeItemClick() {
         return itemClickSubject;
     }
+
 }

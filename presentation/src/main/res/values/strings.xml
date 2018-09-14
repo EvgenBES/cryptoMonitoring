@@ -32,6 +32,7 @@
     <string name="edit_quantity">You edited quantity a coin!</string>
     <string name="edit_quantity_error">You made a mistake try again!</string>
     <string name="add_notif_error">There was mistake try again!</string>
+    <string name="search">Search</string>
 
 
 </resources>

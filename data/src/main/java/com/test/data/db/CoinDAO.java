@@ -29,6 +29,9 @@ public interface CoinDAO {
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE name LIKE :search")
     Flowable<List<CoinResponces>> searchName(String search);
 
+    @Query("SELECT * FROM " + TABLE_NAME + " WHERE name LIKE :search")
+    Flowable<List<CoinResponces>> searchCoinName(String search);
+
     @Query("DELETE FROM " + TABLE_NAME)
     void deleteAll();
 

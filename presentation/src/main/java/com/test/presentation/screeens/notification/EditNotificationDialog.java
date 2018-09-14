@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.test.com.testproject.R;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import com.test.presentation.screeens.main.StartViewActivity;
 
 public class EditNotificationDialog extends DialogFragment {
     private static final String TAG = "EditNotificationDialog";
@@ -33,7 +30,7 @@ public class EditNotificationDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.item_notif_edit_dialog, container, false);
+        View view = inflater.inflate(R.layout.dialog_notif_edit, container, false);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         notifPriceEdit = view.findViewById(R.id.notifPriceEdit);

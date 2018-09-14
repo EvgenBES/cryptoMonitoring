@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.reactivex.exceptions.OnErrorNotImplementedException;
-
 public class AddNotificationDialog extends DialogFragment {
     private static final String TAG = "AddNotificationDialog";
 
@@ -33,7 +31,7 @@ public class AddNotificationDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.item_notif_add_dialog, container, false);
+        View view = inflater.inflate(R.layout.dialog_notif_add, container, false);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         listCoins = getArguments().getStringArrayList("listSearchCoin");
 
