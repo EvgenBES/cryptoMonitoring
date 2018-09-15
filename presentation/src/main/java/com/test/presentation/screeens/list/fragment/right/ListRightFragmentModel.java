@@ -41,18 +41,11 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
     public ListRightFragmentItemAdapter adapter = new ListRightFragmentItemAdapter();
     public ObservableInt coinProgress = new ObservableInt(View.VISIBLE);
 
-    private Observable<String> editSearchText = EditTextSearch.getTextWatcherObservable(ListViewActivity.editTextSearchView);
-
-
     @Inject
     public GetListCoinUseCase getListCoinUseCase;
 
     @Inject
     public AddCoinUseCase addCoinUseCase;
-
-    @Inject
-    public SearchListFragmentCoinUseCase searchListCoinUseCase;
-
 
     @Override
     protected void runInject() {
@@ -157,41 +150,6 @@ public class ListRightFragmentModel extends BaseViewModel<ListRouter, Coin> {
 
                     }
                 });
-
-
-        editSearchText
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        searchListCoinUseCase
-                                .searchListCoin(s)
-                                .subscribe(new Consumer<List<Coin>>() {
-                                    @Override
-                                    public void accept(List<Coin> coins) throws Exception {
-                                        adapter.setItems(coins);
-                                    }
-                                })
-                                .isDisposed();
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
 
     }
 

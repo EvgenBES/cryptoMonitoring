@@ -40,34 +40,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="List coin"
-                    android:textSize="22sp"
-                    android:visibility="@{viewModel.titelText}" />
+                    android:textSize="22sp" />
 
-                <EditText
-                    android:id="@+id/testIdSeart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toLeftOf="@+id/image_search"
-                    android:layout_toRightOf="@+id/imageBack"
-                    android:cursorVisible="true"
-                    android:drawableStart="@drawable/ic_search_l14"
-                    android:drawablePadding="10dp"
-                    android:hint="@string/search"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@{viewModel.textSearch}"
-                    android:visibility="@{viewModel.searchText}" />
-
-                <ImageView
-                    android:id="@+id/image_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:onClick="@{(v)->viewModel.onClickSearch()}"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:src="@{viewModel.imageSearch}" />
 
             </RelativeLayout>
 

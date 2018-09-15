@@ -123,7 +123,7 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     coin.getRank(),
                                     coin.getLastUpdated()));
                         }
-                        return getSortCoinRank(list);
+                        return list;
                     }
                 });
     }
@@ -145,7 +145,7 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     coin.getPrice(),
                                     coin.getRank()));
                         }
-                        return getSortCoinRank(list);
+                        return list;
                     }
                 });
     }
@@ -189,7 +189,7 @@ public class CoinRepositoryImpl implements CoinRepository {
                                     coin.getPrice(),
                                     coin.getQuantity()));
                         }
-                        return getSortCoinPrice(list);
+                        return list;
                     }
                 });
     }
@@ -436,49 +436,5 @@ public class CoinRepositoryImpl implements CoinRepository {
         }
     }
 
-    private List<Coin> getSortCoinRank(List<Coin> listCoinSorn) {
-        if (listCoinSorn.size() > 0) {
-            boolean result;
-            do {
-                result = false;
-                Coin tempCoin;
-                for (int i = 0; i != listCoinSorn.size() - 1; i++) {
-                    if (listCoinSorn.get(i).getRank() > listCoinSorn.get(i + 1).getRank()) {
-                        tempCoin = listCoinSorn.get(i + 1);
-                        listCoinSorn.remove(i + 1);
-                        listCoinSorn.add(i, tempCoin);
-                        result = false;
-                        break;
-                    } else {
-                        result = true;
-                    }
-                }
-            } while (!result);
-        }
-        return listCoinSorn;
-    }
 
-    private List<Coin> getSortCoinPrice(List<Coin> listCoinSorn) {
-        if (listCoinSorn.size() > 0) {
-            boolean result;
-            do {
-                result = false;
-                Coin tempCoin;
-                for (int i = 0; i != listCoinSorn.size() - 1; i++) {
-                    if ((listCoinSorn.get(i).getPrice() * listCoinSorn.get(i).getQuantity()) > (listCoinSorn.get(i + 1).getPrice() * listCoinSorn.get(i + 1).getQuantity())) {
-                        tempCoin = listCoinSorn.get(i + 1);
-                        listCoinSorn.remove(i + 1);
-                        listCoinSorn.add(i, tempCoin);
-                        result = false;
-                        break;
-                    } else {
-                        result = true;
-                    }
-                }
-            } while (!result);
-
-            Collections.reverse(listCoinSorn);
-        }
-        return listCoinSorn;
-    }
 }
